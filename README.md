@@ -6,4 +6,4 @@ Anexo de código del Trabajo Especial de la Licenciatura en Ciencias de la Compu
 
 ---
 
-[Notas del Trabajo Especial](https://www.overleaf.com/read/cpgcygtwksrf#97df54)
+- [Notas del Trabajo Especial](https://www.overleaf.com/read/cpgcygtwksrf#97df54)

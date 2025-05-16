@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs, KindSignatures, EmptyDataDecls #-} 
+{-# LANGUAGE GADTs #-} 
 
 data False -- Fantasma 
 data J c = J (c ()) 
@@ -8,12 +8,12 @@ data R :: * -> * where
    MkR :: (c (J c) -> False) -> R (J c) 
 
 {- La funcion f toma como argumento el mismo R (J R) que construye -}
-cond_false :: R (J R) -> False 
-cond_false x@(MkR f) = f x 
-{-# noinline cond_false #-}
+condFalse :: R (J R) -> False 
+condFalse x@(MkR f) = f x 
+{-# noinline condFalse #-}
 
 absurd :: False 
-absurd = cond_false (MkR cond_false) -- Ciclo de self-reference
+absurd = condFalse (MkR condFalse) -- Ciclo de self-reference
 
 main = do
-  print (absurd `seq` ())
+   print (absurd `seq` ())
