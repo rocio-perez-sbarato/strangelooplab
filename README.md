@@ -1,6 +1,7 @@
-![logo famaf unc](images/Logo_FAMAF_UNC_color.png)
+<img src="images/Logo_FAMAF_UNC_color.png" alt="logo famaf unc" width="325" height="100">
 
 # strangelooplab
+## La computadora como laboratorio filosófico: experimentos y herramientas para el modelado de sistemas reflexivos
 
 Anexo de código del Trabajo Especial de la Licenciatura en Ciencias de la Computación en la Facultad de Matemática, Astronomía, Física y Computación (FaMAFyC)
 
