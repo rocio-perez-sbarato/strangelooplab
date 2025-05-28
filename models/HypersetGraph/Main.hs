@@ -11,9 +11,9 @@ import HypersetGraph.Examples
 -- === Ejecutor ===
 runExample :: String -> LabGraph String -> IO ()
 runExample name labgraph = do
-  let outDir = "output"
+  let outDir = "output_hyperset"
   createDirectoryIfMissing True outDir
-  let decorations = decorateAll labgraph
+  let decorations = computeDecorations labgraph
   writeFile (outDir ++ "/" ++ name ++ ".dot") (showGraphViz labgraph)
   putStrLn $ "\nArchivo " ++ name ++ ".dot generado en carpeta output/"
   putStrLn $ "Decoraciones para " ++ name ++ ":"

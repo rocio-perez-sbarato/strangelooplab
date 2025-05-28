@@ -36,5 +36,5 @@ examples :: [NamedExample]
 examples =
   [ ("example1", labGraph1)
   , ("example2", labGraph2)
-  , ("example3_cycle", labGraph3)
+  , ("example3", labGraph3)
   ]

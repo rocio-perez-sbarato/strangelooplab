@@ -5,8 +5,8 @@ import Data.Typeable (cast, Typeable)
 import HypersetGraph.Types
 
 -- === Decoración ===
-decorateAll :: LabGraph String -> Array Vertex (HFS String)
-decorateAll (LabGraph gr label) = decs
+computeDecorations :: LabGraph String -> Array Vertex (HFS String)
+computeDecorations (LabGraph gr label) = decs
   where
     decs = listArray (bounds gr) [decorate [] v | v <- indices gr]
     decorate visited v
