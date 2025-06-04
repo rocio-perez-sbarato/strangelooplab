@@ -3,6 +3,7 @@ module HypersetGraph.Types where
 import Data.Array
 
 -- === Tipo HFS ===
+-- Usa una lista para almacenar sus elementos
 data HFS t = S [HFS t] | U t deriving (Eq, Show)
 
 -- === Tipos de grafos ===
@@ -11,5 +12,5 @@ type Graph = Array Vertex [Vertex]
 type Edge = (Vertex, Vertex)
 type Bounds = (Vertex, Vertex)
 
-type Labeling a = Vertex -> a
+type Labeling a = Vertex -> HFS a
 data LabGraph n = LabGraph Graph (Labeling n) 
