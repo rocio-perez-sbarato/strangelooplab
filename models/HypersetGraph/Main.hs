@@ -1,5 +1,4 @@
 module HypersetGraph.Main where
-
 import System.Directory (createDirectoryIfMissing)
 import Data.Array
 import HypersetGraph.Types

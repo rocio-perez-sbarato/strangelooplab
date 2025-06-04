@@ -1,5 +1,4 @@
 module HypersetGraph.GraphBuilder where
-
 import Data.Array
 import HypersetGraph.Types
 
