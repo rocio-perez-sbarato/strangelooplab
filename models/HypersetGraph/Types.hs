@@ -2,7 +2,7 @@ module HypersetGraph.Types where
 
 import Data.Array
 
--- === Tipo HFS ===
+-- === Tipo HereditaryFiniteSets ===
 -- Usa una lista para almacenar sus elementos
 data HFS t = S [HFS t] | U t deriving (Eq, Show)
 
@@ -10,7 +10,6 @@ data HFS t = S [HFS t] | U t deriving (Eq, Show)
 type Vertex = Int
 type Graph = Array Vertex [Vertex]
 type Edge = (Vertex, Vertex)
-type Bounds = (Vertex, Vertex)
 
 type Labeling a = Vertex -> HFS a
 data LabGraph n = LabGraph Graph (Labeling n) 

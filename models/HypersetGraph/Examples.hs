@@ -8,7 +8,7 @@ import HypersetGraph.GraphBuilder
 
 -- Ejemplo 1
 edges1 :: [Edge]
-edges1 = [ (0, 1), (0, 2), (1, 2) ]
+edges1 = [(1, 2), (0, 1), (0, 2)]
 labels1 :: Array Vertex (HFS String)
 labels1 = listArray (0, 2)
   [ S [U "x"]
@@ -20,7 +20,7 @@ labGraph1 = LabGraph (buildG (bounds labels1) edges1) (labels1 !)
 
 -- Ejemplo 2
 edges2 :: [Edge]
-edges2 = [ (0, 1), (0, 2), (1, 3), (1, 4), (1, 2), (2, 3), (2, 1) ]
+edges2 = [ (2, 3), (2, 1), (1, 3), (1, 4), (2, 3), (0, 1), (0, 2) ]
 labels2 :: Array Vertex (HFS String)
 labels2 = listArray (0, 4) [S [U "c"], S [U "a"], S [U "b"], S [U "maxi"], S [U "claire"]]
 labGraph2 :: LabGraph String
