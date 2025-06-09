@@ -15,6 +15,12 @@ unionHFS x      y      = S (unionList [x] [y])
 unionList :: Eq t => [HFS t] -> [HFS t] -> [HFS t]
 unionList xs ys = xs ++ [ y | y <- ys, y `notElem` xs ]
 
+-- Definición de conjunto vacío como S []
 isEmpty :: HFS t -> Bool
 isEmpty (S []) = True
 isEmpty _      = False
+
+-- Cuenta todos los nodos
+lengthHFS :: HFS t -> Int
+lengthHFS (U _) = 1
+lengthHFS (S xs) = 1 + sum (map lengthHFS xs)

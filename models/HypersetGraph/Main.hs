@@ -6,6 +6,7 @@ import HypersetGraph.Decorator
 import HypersetGraph.Pretty
 import HypersetGraph.DotExport
 import HypersetGraph.Examples
+import HypersetGraph.SetToGraph
 
 -- === Ejecutor ===
 runExample :: String -> LabGraph String -> IO ()
@@ -19,8 +20,14 @@ runExample name labgraph = do
   mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
         (assocs decorations)
 
+-- Ejemplo de HFS para probar
+hfsExample :: HFS Int
+hfsExample = S [U 0]
+
 -- === Main ===
 main :: IO ()
 main = do
   putStrLn "Ejemplos (decorado y .dot del grafo)"
   mapM_ (uncurry runExample) examples
+  print (enumerateHFS hfsExample)
+  print (setToGraph hfsExample)
