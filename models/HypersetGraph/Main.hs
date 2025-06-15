@@ -21,13 +21,20 @@ runExample name labgraph = do
         (assocs decorations)
 
 -- Ejemplo de HFS para probar
-hfsExample :: HFS Int
-hfsExample = S [U 0]
+hfsExample :: RefHFS Int
+hfsExample = RefS "root" 0 [RefU (1, "child1", 1), RefU (2, "child2", 2)]
+
+hfsCiclico :: RefHFS Int
+hfsCiclico = RefS "root" 0 [RefU (0, "child1", 0)]
 
 -- === Main ===
 main :: IO ()
 main = do
   putStrLn "Ejemplos (decorado y .dot del grafo)"
   mapM_ (uncurry runExample) examples
-  print (enumerateHFS hfsExample)
   print (setToGraph hfsExample)
+  print (setToGraph hfsCiclico)
+  print (getLabels hfsExample)
+  print (getLabels hfsCiclico)
+  putStrLn (showGraphViz (setToLabGraph hfsExample))
+  putStrLn (showGraphViz (setToLabGraph hfsCiclico))
