@@ -7,34 +7,46 @@ import HypersetGraph.Pretty
 import HypersetGraph.DotExport
 import HypersetGraph.Examples
 import HypersetGraph.SetToGraph
+import HypersetGraph.DenoteSystem 
 
--- === Ejecutor ===
-runExample :: String -> LabGraph String -> IO ()
-runExample name labgraph = do
+-- === Ejemplo de sistema de ecuaciones ===
+system :: System String
+system =
+  [ Equation "x" (SetOf [Expr "a", Ref "y"])
+  , Equation "y" (SetOf [Expr "b", Expr "c"])
+  ]
+
+-- === Ejecuta todo el pipeline ===
+runPipeline :: String -> System String -> IO ()
+runPipeline name sys = do
   let outDir = "output_hyperset"
   createDirectoryIfMissing True outDir
+
+  -- Etapa 1: Pasar el sistema a RefHFS
+  let refhfs = denoteSystem sys "x"
+  putStrLn $ "\nSistema de ecuaciones denotado para '" ++ name ++ "':"
+  print refhfs
+
+  -- Etapa 2: Conversión a grafo etiquetado
+  let labgraph = setToLabGraph refhfs
+
+  -- Etapa 3: Decoración
   let decorations = computeDecorations labgraph
-  writeFile (outDir ++ "/" ++ name ++ ".dot") (showGraphViz labgraph)
-  putStrLn $ "\nArchivo " ++ name ++ ".dot generado en carpeta output/"
-  putStrLn $ "Decoraciones para " ++ name ++ ":"
+
+  -- Etapa 4: Exportación a DOT
+  let dotFile = outDir ++ "/" ++ name ++ ".dot"
+  writeFile dotFile (showGraphViz labgraph)
+
+  -- === Salida ===
+  putStrLn $ "\nGrafo en el archivo: " ++ dotFile
+  putStrLn $ "\nDecoraciones para el sistema '" ++ name ++ "':"
   mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
         (assocs decorations)
-
--- Ejemplo de HFS para probar
-hfsExample :: RefHFS Int
-hfsExample = RefS "root" 0 [RefU (1, "child1", 1), RefU (2, "child2", 2)]
-
-hfsCiclico :: RefHFS Int
-hfsCiclico = RefS "root" 0 [RefU (0, "child1", 0)]
 
 -- === Main ===
 main :: IO ()
 main = do
-  putStrLn "Ejemplos (decorado y .dot del grafo)"
-  mapM_ (uncurry runExample) examples
-  print (setToGraph hfsExample)
-  print (setToGraph hfsCiclico)
-  print (getLabels hfsExample)
-  print (getLabels hfsCiclico)
-  putStrLn (showGraphViz (setToLabGraph hfsExample))
-  putStrLn (showGraphViz (setToLabGraph hfsCiclico))
+  putStrLn "=== Hyperset Graph Pipeline ===\n"
+  putStrLn "Sistema de ejemplo:"
+  print system
+  runPipeline "sistema1" system
