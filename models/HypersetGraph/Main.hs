@@ -12,9 +12,7 @@ import HypersetGraph.DenoteSystem
 -- === Ejemplo de sistema de ecuaciones ===
 system :: System String
 system =
-  [ Equation "x" (SetOf [Expr "a", Ref "y"])
-  , Equation "y" (SetOf [Expr "b", Expr "c"])
-  ]
+  [ Equation "x" (SetOf [Ref "x"]) ] -- X = {X}
 
 -- === Ejecuta todo el pipeline ===
 runPipeline :: String -> System String -> IO ()
@@ -49,4 +47,4 @@ main = do
   putStrLn "=== Hyperset Graph Pipeline ===\n"
   putStrLn "Sistema de ejemplo:"
   print system
-  runPipeline "sistema1" system
+  runPipeline "sistema" system

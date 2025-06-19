@@ -17,20 +17,20 @@ setToLabGraph refhfs =
 setToGraph :: RefHFS t -> Graph
 setToGraph refhfs =
   let n = countVertices refhfs
-  in listArray (0, n - 1) [getNeighbours refhfs v | v <- [0..n-1]]
+  in listArray (0, n - 1) [getChildren refhfs v | v <- [0..n-1]]
 
--- Obtiene los vecinos de un vértice en un RefHFS
-getNeighbours :: RefHFS t -> Vertex -> [Vertex]
-getNeighbours (RefU (_, _, v)) target = []
-getNeighbours (RefS _ v children) target
+-- Obtiene los hijos de un vértice en un RefHFS
+getChildren :: RefHFS t -> ID -> [ID]
+getChildren (RefU (_, _, v)) target = []
+getChildren (RefS _ v children) target
   | v == target = map getVertex children
-  | otherwise   = concatMap (\child -> getNeighbours child target) children
+  | otherwise   = concatMap (\child -> getChildren child target) children
   where
     getVertex (RefU (_, _, v)) = v
-    getVertex (RefS _ v _)     = v
+    getVertex (RefS _ v _)     = v 
 
--- Extrae los labels de cada vértice en un array indexado por Vertex
-getLabels :: RefHFS t -> Array Vertex Label
+-- Extrae los labels de cada vértice en un array indexado por ID
+getLabels :: RefHFS t -> Array ID Label
 getLabels refhfs =
   let pairs = collectLabels refhfs
       n = countVertices refhfs
