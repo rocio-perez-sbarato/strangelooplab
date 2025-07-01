@@ -1,6 +1,6 @@
-module HypersetGraph.Operations where
+module Hyperset.Operations where
 
-import HypersetGraph.Types
+import Hyperset.Types
 import qualified Data.Set as Set
 
 -- Al fin y al cabo, los conjuntos HFS son listas

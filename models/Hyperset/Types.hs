@@ -1,4 +1,4 @@
-module HypersetGraph.Types where
+module Hyperset.Types where
 
 import Data.Array
 
@@ -17,7 +17,8 @@ data Equation t = Equation Variable (SetExpr t)
 type System t = [Equation t] 
 
 -- === Tipo HereditaryFiniteSets con manejo de ciclos ===
-data RefHFS t = RefS Label ID [RefHFS t] | RefU (t, Label, ID)
+-- Tiene info extra sobre Variables, para simplificar la estructura podría borrarlas
+data RefHFS t = RefS Variable ID [RefHFS t] | RefU (t, Variable, ID) 
   deriving (Show)
 
 -- === Tipo HereditaryFiniteSets ===

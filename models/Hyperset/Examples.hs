@@ -1,8 +1,8 @@
-module HypersetGraph.Examples where
+module Hyperset.Examples where
 
 import Data.Array
-import HypersetGraph.Types
-import HypersetGraph.GraphBuilder
+import Hyperset.Types
+import Hyperset.GraphBuilder
 
 -- === Ejemplos ===
 

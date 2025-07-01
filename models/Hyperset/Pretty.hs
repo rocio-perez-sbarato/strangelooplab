@@ -1,8 +1,8 @@
-module HypersetGraph.Pretty where
+module Hyperset.Pretty where
 
 import Data.Typeable (cast, Typeable)
 import Data.List (intercalate)
-import HypersetGraph.Types
+import Hyperset.Types
 
 -- Pretty print
 prettyHFS :: (Show t, Typeable t) => HFS t -> String

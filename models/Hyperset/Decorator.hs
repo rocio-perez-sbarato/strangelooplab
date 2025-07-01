@@ -1,7 +1,7 @@
-module HypersetGraph.Decorator where
+module Hyperset.Decorator where
 import Data.Array
-import HypersetGraph.Types
-import HypersetGraph.Operations
+import Hyperset.Types
+import Hyperset.Operations
 
 -- Decorado de cada vértice del grafo
 computeDecorations :: LabGraph String -> Array Vertex (HFS String)

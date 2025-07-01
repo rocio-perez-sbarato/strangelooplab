@@ -1,8 +1,8 @@
-module HypersetGraph.DotExport where
+module Hyperset.DotExport where
 
 import Data.Array
 import Data.Typeable (Typeable)
-import HypersetGraph.Types
+import Hyperset.Types
 
 -- DOT export 
 showGraphViz :: (Show a, Typeable a) => LabGraph a -> String

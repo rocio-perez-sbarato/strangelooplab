@@ -1,6 +1,6 @@
-module HypersetGraph.DenoteSystem where 
+module Hyperset.DenoteSystem where 
 
-import HypersetGraph.Types 
+import Hyperset.Types 
 
 denoteSystem :: System String -> String -> RefHFS String
 denoteSystem system rootVar =

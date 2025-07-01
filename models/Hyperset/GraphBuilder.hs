@@ -1,6 +1,6 @@
-module HypersetGraph.GraphBuilder where
+module Hyperset.GraphBuilder where
 import Data.Array
-import HypersetGraph.Types
+import Hyperset.Types
 
 -- === Construcción del grafo ===
 -- Construye un Graph a partir de los límites (bounds) de los vértices y una lista de aristas (edges)

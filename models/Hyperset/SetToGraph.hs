@@ -1,16 +1,12 @@
-module HypersetGraph.SetToGraph where 
-
-import HypersetGraph.Types 
-import HypersetGraph.Operations 
-
+module Hyperset.SetToGraph where 
+import Hyperset.Types 
+import Hyperset.Operations 
 import Data.Array
 
--- Construye el LabGraph
-setToLabGraph :: RefHFS t -> LabGraph Label
-setToLabGraph refhfs =
+-- Construye el LabGraph, recibiendo el labeling a mano
+setToLabGraph :: RefHFS t -> Labeling Label -> LabGraph Label
+setToLabGraph refhfs labeling =
   let g = setToGraph refhfs
-      labelsArr = getLabels refhfs
-      labeling v = S [U (labelsArr ! v)]   
   in LabGraph g labeling
 
 -- Convierte un conjunto HFS a un grafo
@@ -28,10 +24,3 @@ getChildren (RefS _ v children) target
   where
     getVertex (RefU (_, _, v)) = v
     getVertex (RefS _ v _)     = v 
-
--- Extrae los labels de cada vértice en un array indexado por ID
-getLabels :: RefHFS t -> Array ID Label
-getLabels refhfs =
-  let pairs = collectLabels refhfs
-      n = countVertices refhfs
-  in array (0, n - 1) pairs
