@@ -1,6 +1,10 @@
 module Hyperset.DenoteSystem where 
-
+  
 import Hyperset.Types 
+import Hyperset.Operations
+
+systemToHFS :: System String -> String -> HFS String
+systemToHFS system rootVar = justHereditary (denoteSystem system rootVar)
 
 denoteSystem :: System String -> String -> RefHFS String
 denoteSystem system rootVar =
@@ -68,6 +72,7 @@ buildVertexMap system =
     varNames = map (\(Equation v _) -> v) system
     varMap = zip varNames [0..]
     exprElements = getSetExprElements system
+    -- Filtro de duplicados
     elementNames = filter (\x -> not (elem x varNames)) exprElements
     exprMap = zip elementNames [length varMap ..]
   in varMap ++ exprMap

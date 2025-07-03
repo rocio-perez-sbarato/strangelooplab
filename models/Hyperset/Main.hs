@@ -5,27 +5,22 @@ import Hyperset.Types
 import Hyperset.Decorator
 import Hyperset.Pretty
 import Hyperset.DotExport
-import Hyperset.Examples
 import Hyperset.SetToGraph
 import Hyperset.DenoteSystem 
 
 -- === Ejemplo de sistema de ecuaciones ===
 system :: System String
 system =
-  [ Equation "q"   (SetOf [Expr "p", Ref "A"])
-  , Equation "A" (SetOf [Expr "s", Ref "B"])
-  , Equation "B"  (SetOf [Expr "t", Expr "u"])
+  [ Equation "a"   (SetOf [Ref "b", Ref "c"])
+  , Equation "b" (SetOf [Ref "c"])
+  , Equation "c"  (SetOf [])
   ]
 
 -- Labels para variables y constantes
 labeling :: Labeling String
-labeling 0 = S [U "q"]
-labeling 1 = S [U "p"]
-labeling 2 = S [U "s", U "t", U "u"]
-labeling 3 = S [U "s"]
-labeling 4 = S [U "t", U "u"]
-labeling 5 = S [U "t"]
-labeling 6 = S [U "u"]
+labeling 0 = S [U "x"]
+labeling 1 = S []
+labeling 2 = S [U "x", U "y"]
 labeling _ = S [U "???"]
 
 -- === Ejecuta todo el pipeline ===
@@ -35,7 +30,7 @@ runPipeline name sys labeling = do
   createDirectoryIfMissing True outDir
 
   -- Etapa 1: Pasar el sistema a RefHFS
-  let refhfs = denoteSystem sys "q"
+  let refhfs = denoteSystem sys "a"
   putStrLn $ "\nSistema de ecuaciones denotado para '" ++ name ++ "':"
   print refhfs
 
