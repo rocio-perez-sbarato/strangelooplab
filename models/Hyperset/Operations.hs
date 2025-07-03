@@ -21,22 +21,17 @@ isEmpty :: HFS t -> Bool
 isEmpty (S []) = True
 isEmpty _      = False
 
+-- Pasa de RefHFS a HFS
+justHereditary :: RefHFS a -> HFS a
+justHereditary (RefU (x,z)) = U x
+justHereditary (RefS x xs) = S newList 
+    where 
+        newList = map justHereditary xs 
+
 -- Cuenta la cantidad de vértices en un RefHFS
 countRefHFS :: RefHFS t -> Int
-countRefHFS (RefU (_, _, _)) = 1
-countRefHFS (RefS _ _ children) = 1 + sum (map countRefHFS children)
-
--- Recorre el RefHFS y junta (Vertex, Label) 
--- Asocia cada vértice único con su label (primera aparición)
-collectLabels :: RefHFS t -> [(Vertex, Label)]
-collectLabels refhfs = go refhfs Set.empty
-  where
-    go (RefU (_, label, v)) seen
-      | v `Set.member` seen = []
-      | otherwise           = [(v, label)]
-    go (RefS label v children) seen
-      | v `Set.member` seen = []
-      | otherwise           = (v, label) : concatMap (\c -> go c (Set.insert v seen)) children
+countRefHFS (RefU (_, _)) = 1
+countRefHFS (RefS _ children) = 1 + sum (map countRefHFS children)
 
 -- Cuenta los vértices únicos en el RefHFS
 -- Contempla ciclos y referencias entre vértices
@@ -44,9 +39,9 @@ collectLabels refhfs = go refhfs Set.empty
 countVertices :: RefHFS t -> Int
 countVertices refhfs = Set.size (collectVertices refhfs Set.empty)
   where
-    collectVertices (RefU (_, _, v)) seen
+    collectVertices (RefU (_, v)) seen
       | v `Set.member` seen = seen
       | otherwise           = Set.insert v seen
-    collectVertices (RefS _ v children) seen
+    collectVertices (RefS v children) seen
       | v `Set.member` seen = seen
       | otherwise           = foldr collectVertices (Set.insert v seen) children

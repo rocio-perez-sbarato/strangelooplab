@@ -17,10 +17,10 @@ setToGraph refhfs =
 
 -- Obtiene los hijos de un vértice en un RefHFS
 getChildren :: RefHFS t -> ID -> [ID]
-getChildren (RefU (_, _, v)) target = []
-getChildren (RefS _ v children) target
+getChildren (RefU (_, v)) target = []
+getChildren (RefS v children) target
   | v == target = map getVertex children
   | otherwise   = concatMap (\child -> getChildren child target) children
   where
-    getVertex (RefU (_, _, v)) = v
-    getVertex (RefS _ v _)     = v 
+    getVertex (RefU (_, v)) = v
+    getVertex (RefS v _)     = v 

@@ -21,22 +21,22 @@ convertExpr
 
 -- === CASO 1: SetOf ===
 convertExpr vmap dict visited expanded (label, vertex) (SetOf exprs)
-  | label `elem` expanded = RefU (label, label, vertex)
+  | label `elem` expanded = RefU (label, vertex)
   | otherwise =
       let newExpanded = label : expanded
           convertedChildren = map (convertExpr vmap dict visited newExpanded (label, vertex)) exprs
-      in RefS label vertex convertedChildren
+      in RefS vertex convertedChildren
 
 -- === CASO 2: Expr (una constante) ===
 convertExpr vmap _ _ _ _ (Expr t) =
   let v = lookupList t vmap
-  in RefU (t, t, v)
+  in RefU (t, v)
 
 -- === CASO 3: Ref (variable) ===
 convertExpr vmap dict visited expanded _ (Ref var)
   | var `elem` visited =
       let v = lookupList var vmap
-      in RefU (var, var, v)
+      in RefU (var, v)
   | otherwise =
       case lookupList var dict of
         SetOf es ->

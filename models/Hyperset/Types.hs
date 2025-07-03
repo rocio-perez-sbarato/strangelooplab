@@ -17,8 +17,7 @@ data Equation t = Equation Variable (SetExpr t)
 type System t = [Equation t] 
 
 -- === Tipo HereditaryFiniteSets con manejo de ciclos ===
--- Tiene info extra sobre Variables, para simplificar la estructura podría borrarlas
-data RefHFS t = RefS Variable ID [RefHFS t] | RefU (t, Variable, ID) 
+data RefHFS t = RefS ID [RefHFS t] | RefU (t, ID) 
   deriving (Show)
 
 -- === Tipo HereditaryFiniteSets ===
