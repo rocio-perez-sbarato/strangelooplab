@@ -8,20 +8,41 @@ import Hyperset.DotExport
 import Hyperset.SetToGraph
 import Hyperset.DenoteSystem 
 
--- === Ejemplo de sistema de ecuaciones ===
+-- Ejemplitos 
 system :: System String
-system =
-  [ Equation "a"   (SetOf [Ref "b", Ref "c"])
-  , Equation "b" (SetOf [Ref "c"])
-  , Equation "c"  (SetOf [])
+system = 
+  [ Equation "X" (SetOf [Ref "Y"])
+  , Equation "Y" (SetOf [Ref "X"])
   ]
 
--- Labels para variables y constantes
 labeling :: Labeling String
-labeling 0 = S [U "x"]
-labeling 1 = S []
-labeling 2 = S [U "x", U "y"]
+labeling 0 = U "X"
+labeling 1 = U "Y"
 labeling _ = S [U "???"]
+
+-- === Ejemplo de sistema de ecuaciones ===
+system2 :: System String
+system2 =
+  [ Equation "X" (SetOf [Ref "X"])  ]
+
+-- Labels para variables y constantes
+labeling2 :: Labeling String
+labeling2 0 = S [U "0"]                       
+labeling2 _ = S [U "???"]
+
+system3 :: System String
+system3 =
+  [ Equation "X" (SetOf [Ref "Y", Ref "Z"])
+  , Equation "Y" (SetOf [Ref "X"])
+  , Equation "Z" (SetOf [Expr "0"])
+  ]
+
+labeling3 :: Labeling String
+labeling3 0 = S [U "X"]
+labeling3 1 = S [U "Y"]
+labeling3 2 = S [U "Z"]
+labeling3 3 = S [U "0"]
+labeling3 _ = S [U "???"]
 
 -- === Ejecuta todo el pipeline ===
 runPipeline :: String -> System String -> Labeling String -> IO ()
@@ -30,7 +51,7 @@ runPipeline name sys labeling = do
   createDirectoryIfMissing True outDir
 
   -- Etapa 1: Pasar el sistema a RefHFS
-  let refhfs = denoteSystem sys "a"
+  let refhfs = denoteSystem sys "X"
   putStrLn $ "\nSistema de ecuaciones denotado para '" ++ name ++ "':"
   print refhfs
 

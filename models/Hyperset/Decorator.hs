@@ -11,11 +11,10 @@ computeDecorations (LabGraph gr label) = listArray (bounds gr)
 -- Decorado de un vértice 
 decorate :: Graph -> Labeling String -> [Vertex] -> Vertex -> HFS String
 decorate gr label visited v
-      | v `elem` visited = S [] -- Evitar recursión infinita 
-      | null children  = label v -- Caso base: sin hijos
-      | otherwise = unionHFS (label v) (S nonEmptyChildDecs) -- Caso recursivo: con hijos
+      | v `elem` visited = label v -- Agrega el label aunque esté visitado
+      | null children  = label v
+      | otherwise = unionHFS (label v) (S childDecs)
       where
         children = gr ! v
         visited' = v : visited
-        nonEmptyChildDecs = filter (not . isEmpty) 
-                              (map (decorate gr label visited') children)
+        childDecs = map (decorate gr label visited') children

@@ -11,7 +11,6 @@ unionHFS (S xs) (S ys) = S (unionList xs ys)
 unionHFS (S xs) y      = S (unionList xs [y]) 
 unionHFS x      (S ys) = S (unionList [x] ys)
 unionHFS x      y      = S (unionList [x] [y]) 
-
 -- Unión de listas sin repetir elementos 
 unionList :: Eq t => [HFS t] -> [HFS t] -> [HFS t]
 unionList xs ys = xs ++ [ y | y <- ys, y `notElem` xs ]
