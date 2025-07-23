@@ -10,7 +10,7 @@ Anexo de código del Trabajo Especial de la Licenciatura en Ciencias de la Compu
 ### Ejecución
 
 ```
-strangelooplab\models> ghci Hyperset/Main.hs
+strangelooplab\models> ghci .\Hyperset\Main.hs
 ```
 
 ### Notas y organización
