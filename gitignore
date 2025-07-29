@@ -1,2 +1,31 @@
-*.dot
-models/output_hyperset/
+# Build artifacts
+dist/
+dist-newstyle/
+*.o
+*.hi
+*.dyn_hi
+*.dyn_o
+*.prof
+*.aux
+*.hp
+*.eventlog
+*.log
+*.out
+
+# Executables
+hyperset
+hyperset.exe
+
+# Generated Haddock docs 
+docs/
+
+# Stack (if ever used)
+.stack-work/
+
+# IDE / editor stuff
+*.swp
+*.bak
+*.tags
+*.DS_Store
+*.vscode/
+
