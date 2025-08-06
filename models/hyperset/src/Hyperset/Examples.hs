@@ -17,7 +17,12 @@ module Hyperset.Examples
   , systemM3, labelingM3
   ) where
 
-import Hyperset.Types 
+import Hyperset.Types
+    ( Equation(Equation),
+      HFS(U, S),
+      Labeling,
+      SetExpr(Expr, Ref, SetOf),
+      System ) 
 
 -- === Ejemplo mutualRef ===
 mutualRef :: System String

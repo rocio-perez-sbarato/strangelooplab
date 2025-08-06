@@ -1,6 +1,7 @@
 {-|
 Module      : Hyperset.Types
-Description : Tipos principales para representar sistemas de ecuaciones en ZFA
+Description : Módulo que realiza la impresión por pantalla del tipo de datos HFS. 
+                Se encarga de visualizar este tipo como conjuntos en ZFA.
 Copyright   : (c) Rocío Perez Sbarato, 2025
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
@@ -8,12 +9,11 @@ Stability   : experimental
 Portability : portable
 -}
 
-
 module Hyperset.Pretty where
 
 import Data.Typeable (cast, Typeable)
 import Data.List (intercalate)
-import Hyperset.Types
+import Hyperset.Types ( HFS(..) )
 
 -- | Pretty print
 prettyHFS :: (Show t, Typeable t) => HFS t -> String

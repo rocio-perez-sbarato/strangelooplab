@@ -1,13 +1,3 @@
-{-|
-Module      : Hyperset.Types
-Description : Tipos principales para representar sistemas de ecuaciones en ZFA
-Copyright   : (c) Rocío Perez Sbarato, 2025
-License     : MIT
-Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
-Stability   : experimental
-Portability : portable
--}
-
 module Main where
 
 import System.Directory (createDirectoryIfMissing)
@@ -19,6 +9,8 @@ import Hyperset.DenoteSystem
 import Hyperset.Examples 
 import Hyperset.Pretty
 import Hyperset.DotExport
+import Hyperset.Sentence (sentenceYablo, yabloToSystem, yabloLabeling, dualLiarSystem, dualLiarLabeling)
+import Hyperset.SelfRefParadox
 
 -- | Ejecuta todo el pipeline
 runPipeline :: String -> System String -> Labeling String -> IO ()
@@ -43,6 +35,30 @@ runPipeline name sys labeling = do
 main :: IO ()
 main = do
   putStrLn "=== Hyperset Graph Pipeline ===\n"
-  putStrLn "Sistema de ejemplo:"
+
+  -- Primer sistema: M3
+  putStrLn "\nSistema M3:"
   print systemM3
-  runPipeline "sistema" systemM3 labelingM3
+  runPipeline "sistema_M3" systemM3 labelingM3
+
+  -- Segundo sistema: Yablo 
+  let sentYablo = sentenceYablo 1 2
+  let sysYablo = yabloToSystem sentYablo
+  let labelingYablo = yabloLabeling sentYablo
+
+  putStrLn "\nSistema Yablo:"
+  print sysYablo
+  runPipeline "sistema_Yablo" sysYablo labelingYablo
+
+  
+  let sysDualLiar = dualLiarSystem 
+  let labelingDualLiar = dualLiarLabeling
+
+  putStrLn "\nSistema Dual Liar:"
+  print sysDualLiar
+  runPipeline "sistema_dual_liar" sysDualLiar labelingDualLiar
+
+
+
+
+

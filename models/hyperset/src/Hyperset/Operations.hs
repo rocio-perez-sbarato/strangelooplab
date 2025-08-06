@@ -1,6 +1,6 @@
 {-|
 Module      : Hyperset.Types
-Description : Tipos principales para representar sistemas de ecuaciones en ZFA
+Description : Módulo que contiene operaciones básica de conjuntos.
 Copyright   : (c) Rocío Perez Sbarato, 2025
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
@@ -8,15 +8,15 @@ Stability   : experimental
 Portability : portable
 -}
 
-
 module Hyperset.Operations where
 
-import Hyperset.Types
+import Hyperset.Types ( HFS(..), RefHFS(..) )
 import qualified Data.Set as Set
 
--- Al fin y al cabo, los conjuntos HFS son listas
--- Caso U: ponemos los U x en una lista para meterlos en un conjunto
--- Caso S: concatenamos las listas de los conjuntos
+{- | Unión de conjuntos
+Caso U: ponemos los U x en una lista para meterlos en un conjunto
+Caso S: concatenamos las listas de los conjuntos
+-}
 unionHFS :: Eq t => HFS t -> HFS t -> HFS t
 unionHFS (S xs) (S ys) = S (unionList xs ys)
 unionHFS (S xs) y      = S (unionList xs [y]) 
@@ -38,11 +38,6 @@ justHereditary (RefU (x,z)) = U x
 justHereditary (RefS x xs) = S newList 
     where 
         newList = map justHereditary xs 
-
--- | Cuenta la cantidad de vértices en un RefHFS
-countRefHFS :: RefHFS t -> Int
-countRefHFS (RefU (_, _)) = 1
-countRefHFS (RefS _ children) = 1 + sum (map countRefHFS children)
 
 {- | Cuenta los vértices únicos en el RefHFS
       Contempla ciclos y referencias entre vértices

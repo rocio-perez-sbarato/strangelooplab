@@ -1,6 +1,6 @@
 {-|
 Module      : Hyperset.Types
-Description : Tipos principales para representar sistemas de ecuaciones en ZFA
+Description : Tipos principales para representar sistemas de ecuaciones, conjuntos y grafos en ZFA
 Copyright   : (c) Rocío Perez Sbarato, 2025
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
@@ -10,7 +10,7 @@ Portability : portable
 
 module Hyperset.Types where
 
-import Data.Array
+import Data.Array ( Array )
 
 -- | Tipos de datos básicos 
 type Variable = String
@@ -26,15 +26,17 @@ data Equation t = Equation Variable (SetExpr t)
 
 type System t = [Equation t] 
 
--- | Tipo HereditaryFiniteSets con manejo de ciclos
+-- | Tipo Hereditary Finite Sets con manejo de ciclos
 data RefHFS t = RefS ID [RefHFS t] | RefU (t, ID) 
   deriving (Show)
 
--- | Tipo HereditaryFiniteSets 
+-- | Tipo Hereditary Finite Sets 
 data HFS t = S [HFS t] | U t 
   deriving (Eq, Show)
 
--- | Tipos Graph y LabGraph 
+{- | Tipos Graph y LabGraph. Notar que Labeling es
+de cada vértice es un conjunto HFS.-}
+
 type Graph = Array Vertex [Vertex]
 type Edge = (Vertex, Vertex)
 type Bounds = (Vertex, Vertex)

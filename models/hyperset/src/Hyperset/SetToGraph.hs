@@ -1,6 +1,7 @@
 {-|
 Module      : Hyperset.Types
-Description : Tipos principales para representar sistemas de ecuaciones en ZFA
+Description : Módulo que realiza el pasaje del tipo de datos HFS al tipo de datos LabGraph,
+              respetando la herencia propuesta por HFS
 Copyright   : (c) Rocío Perez Sbarato, 2025
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
@@ -8,13 +9,13 @@ Stability   : experimental
 Portability : portable
 -}
 
-
 module Hyperset.SetToGraph where 
-import Hyperset.Types 
-import Hyperset.Operations 
-import Data.Array
-
--- | Construye el LabGraph, recibiendo el labeling a mano
+import Hyperset.Types
+    ( LabGraph(..), Labeling, Graph, RefHFS(..), ID, Label ) 
+import Hyperset.Operations ( countVertices ) 
+import Data.Array ( listArray )
+import Data.List (nub)
+-- | Construye el LabGraph, recibiendo el labeling como parámetro
 setToLabGraph :: RefHFS t -> Labeling Label -> LabGraph Label
 setToLabGraph refhfs labeling =
   let g = setToGraph refhfs
@@ -26,12 +27,12 @@ setToGraph refhfs =
   let n = countVertices refhfs
   in listArray (0, n - 1) [getChildren refhfs v | v <- [0..n-1]]
 
--- | Obtiene los hijos de un vértice en un RefHFS
+-- | Obtiene los IDs de los hijos de un vértice en un RefHFS
 getChildren :: RefHFS t -> ID -> [ID]
 getChildren (RefU (_, v)) target = []
 getChildren (RefS v children) target
-  | v == target = map getVertex children
-  | otherwise   = concatMap (\child -> getChildren child target) children
+  | v == target = nub $ map getVertex children
+  | otherwise   = nub $ concatMap (\child -> getChildren child target) children
   where
     getVertex (RefU (_, v)) = v
-    getVertex (RefS v _)     = v 
+    getVertex (RefS v _)     = v

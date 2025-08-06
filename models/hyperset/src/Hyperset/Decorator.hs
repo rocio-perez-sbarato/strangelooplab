@@ -1,6 +1,6 @@
 {-|
 Module      : Hyperset.Types
-Description : Tipos principales para representar sistemas de ecuaciones en ZFA
+Description : Decorado de grafos etiquetados siguiendo la definición formal
 Copyright   : (c) Rocío Perez Sbarato, 2025
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
@@ -8,11 +8,11 @@ Stability   : experimental
 Portability : portable
 -}
 
-
 module Hyperset.Decorator where
-import Data.Array
+import Data.Array ( Array, (!), bounds, indices, listArray )
 import Hyperset.Types
-import Hyperset.Operations
+    ( Graph, HFS(S), LabGraph(..), Labeling, Vertex )
+import Hyperset.Operations ( unionHFS )
 
 -- | Decorado de cada vértice del grafo
 computeDecorations :: LabGraph String -> Array Vertex (HFS String)
