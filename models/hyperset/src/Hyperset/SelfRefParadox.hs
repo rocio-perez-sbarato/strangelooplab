@@ -23,6 +23,13 @@ where
 import Hyperset.Types
     ( HFS(..), Equation(..), SetExpr(Expr, Ref, SetOf), System, Labeling)
 import Hyperset.Operations ( unionHFS ) 
+import System.Directory (createDirectoryIfMissing)
+import Data.Array ( assocs )
+import Hyperset.Decorator ( computeDecorations )
+import Hyperset.SetToGraph ( setToLabGraph )
+import Hyperset.DenoteSystem ( denoteSystem )
+import Hyperset.Pretty ( prettyHFS )
+import Hyperset.DotExport ( showLabGraphViz, showGraphViz )
 
 -- * Tipo de datos de paradoja autorreferencial
 
@@ -108,3 +115,37 @@ knownParadoxes =
         russellParadox,
         barberParadox
     ]
+
+{- | Ejecuta el pipeline completo para un sistema:
+   * Denotación del sistema
+   * Construcción del grafo
+   * Escritura del archivo DOT
+   * Impresión de decoraciones
+-}
+runPipeline :: String -> System String -> Labeling String -> IO ()
+runPipeline name sys labeling = do
+    let outDir = "output_hyperset"
+    createDirectoryIfMissing True outDir
+
+    let refhfs = denoteSystem sys "q"
+    putStrLn $ "\nSistema de ecuaciones denotado para '" ++ name ++ "':"
+    print refhfs
+
+    let labgraph = setToLabGraph refhfs labeling
+    let decorations = computeDecorations labgraph
+    let dotFile = outDir ++ "/" ++ name ++ ".dot"
+    writeFile dotFile (showLabGraphViz labgraph)
+
+    putStrLn $ "\nGrafo en el archivo: " ++ dotFile
+    putStrLn $ "\nDecoraciones para el sistema '" ++ name ++ "':"
+    mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
+            (assocs decorations)
+
+main :: IO ()
+main = do
+    putStrLn "=== Hyperset Graph Pipeline ===\n"
+
+    let liarSystem = paradoxToSystem liarParadox
+    let liarLabeling = paradoxLabeling liarParadox
+    
+    runPipeline "Liar" liarSystem liarLabeling

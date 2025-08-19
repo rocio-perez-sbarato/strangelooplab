@@ -15,6 +15,7 @@ import Hyperset.Types
 import Hyperset.Operations ( countVertices ) 
 import Data.Array ( listArray )
 import Data.List (nub)
+
 -- | Construye el LabGraph, recibiendo el labeling como parámetro
 setToLabGraph :: RefHFS t -> Labeling Label -> LabGraph Label
 setToLabGraph refhfs labeling =

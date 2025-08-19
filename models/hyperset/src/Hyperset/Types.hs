@@ -20,7 +20,6 @@ type ID = Int
 
 -- | Tipo System
 data SetExpr t = Ref Variable | Expr t | SetOf [SetExpr t] deriving (Show)
-
 data Equation t = Equation Variable (SetExpr t) 
   deriving (Show)
 

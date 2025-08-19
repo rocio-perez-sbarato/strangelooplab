@@ -57,8 +57,3 @@ main = do
   putStrLn "\nSistema Dual Liar:"
   print sysDualLiar
   runPipeline "sistema_dual_liar" sysDualLiar labelingDualLiar
-
-
-
-
-

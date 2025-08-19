@@ -176,6 +176,10 @@ sentenceNamesRange i n = concatMap (\j -> sentenceName j ++ if j < n then ", " e
 sentenceNamesHFS :: Int -> Int -> HFS String
 sentenceNamesHFS i n = S [ S [ U (sentenceName j) ] | j <- [i..n] ]
 
+-- | Extrae el número de una sentencia a partir de su nombre 
+getNumber :: String -> String 
+getNumber = drop 1 
+
 -- | Obtiene el último número presente en el string del sujeto.
 getLastNumber :: String -> Int
 getLastNumber sub =
@@ -202,10 +206,6 @@ buildLabeling name sub =
         jmax = getLastNumber sub    
     in S [ S [ U (sentenceName j) ] | j <- [(i+1)..jmax] ]
 
--- | Extrae el número de una sentencia a partir de su nombre 
-getNumber :: String -> String 
-getNumber = drop 1 
-        
 {- | Pasaje de paradoja de Yablo a un sistema de ecuaciones. 
 Notar la herencia en los nombres de variables, referencias y expresiones. 
 -}
