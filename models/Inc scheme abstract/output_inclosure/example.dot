@@ -1,0 +1,10 @@
+digraph name {
+rankdir=LR;
+0 [label="Ω"];
+1 [label="x"];
+0 -> 0 [label="ϕ"];
+0 -> 0 [label="δ", color=red];
+1 -> 1 [label="ψ"];
+1 -> 1 [label="δ"];
+1 -> 0 [label="⊆"];
+}

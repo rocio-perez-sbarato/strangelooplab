@@ -1,15 +1,7 @@
-module Example where
+module Graph where
 
 import Elements ( Graph, Inclosure(Inclosure), Labeling) 
 import Data.Array ( array )
-
--- Inclosure Schema instanciado
-genInclosure :: Inclosure
-genInclosure = Inclosure "Omega" "x" "epsi" "phi" "delta"
-
--- Caso especial de Inclosure Scheme para Russell Scheme
-rusellScheme :: Inclosure
-rusellScheme = Inclosure "V" "x" "id" "⋲ V" "ρ"
 
 -- Grafo con aristas etiquetadas
 buildIncGraph :: Inclosure -> Graph String
