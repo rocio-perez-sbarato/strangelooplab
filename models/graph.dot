@@ -1,0 +1,9 @@
+digraph G {
+  0 [label=RefS 0 [RefS 1 [Apply [("delta",1,V1),("delta",0,V1)]],Apply [("delta",1,V1),("delta",0,V1)]]];
+  1 [label=RefS 1 [Apply [("delta",1,V1),("delta",0,V1)]]];
+  0 -> 1;
+  0 -> 1 [label="delta"];
+  0 -> 0 [label="delta"];
+  1 -> 1 [label="delta"];
+  1 -> 0 [label="delta"];
+}

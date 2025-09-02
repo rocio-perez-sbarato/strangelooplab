@@ -10,7 +10,7 @@ Portability : portable
 
 module IncSchemeFuncional.Types where
 
-import Data.Array ( Array )
+import Data.Array 
 import Text.Show.Functions ()
 
 -- | Tipos de datos básicos 
@@ -34,17 +34,10 @@ data SetExpr t
 
 -- | Fórmulas de primer orden sobre conjuntos
 data FunProp t
-    = Not   (FunProp t)
+    = SetProp [FunProp t]
+    | Not   (FunProp t)
     | And   (FunProp t) (FunProp t)
-    | Or    (FunProp t) (FunProp t)
-    | Impl  (FunProp t) (FunProp t)
-    | Equiv (FunProp t) (FunProp t)
     | Elem  (SetExpr t) (SetExpr t)     -- pertenencia entre elementos
-    | Transcendence (SetExpr t) (SetExpr t) (SetExpr t) -- Transcendence fun from to
-    | Closure       (SetExpr t) (SetExpr t) (SetExpr t) -- Closure fun from to
-    | ForAll Variable (FunProp t)        -- ∀X. φ
-    | Exists Variable (FunProp t)        -- ∃X. φ
-    | Fun (FunProp t) (FunProp t) -- Fun logic and properties
     deriving (Eq, Ord, Show)
 
 -- | Un enunciado general: puede ser una "ecuación" o un "axioma"
@@ -77,12 +70,19 @@ data HFS t = S [HFS t] | U t
 {- | Tipos Graph y LabGraph. Notar que Labeling es
 de cada vértice es un conjunto HFS.-}
 
-type Graph = Array Vertex [Vertex]
-type Edge e = (Vertex, e, Vertex)
-type Bounds = (Vertex, Vertex)
+type Table a = Array Vertex a
+type Graph e = Table [(Maybe e, Vertex)]
+type Bounds  = (Vertex, Vertex)
+type Edge e = (Vertex, Maybe e, Vertex)
 
-type Labeling a = Vertex -> HFS a 
-data LabGraph n = LabGraph Graph (Labeling n) 
+type Labeling a = Vertex -> a
+data LabGraph n e = LabGraph (Graph e) (Labeling n)
+
+vertices :: LabGraph n e -> [Vertex]
+vertices (LabGraph gr _) = indices gr
+
+labels :: LabGraph n e -> [n]
+labels (LabGraph gr l) = map l (indices gr)
 
 -- *************************************
 -- | Inclosure Scheme
