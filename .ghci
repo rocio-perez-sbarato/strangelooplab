@@ -1,0 +1,28 @@
+------------------------------------------------------------
+-- Rutas a todos los módulos del proyecto
+------------------------------------------------------------
+:set -i./models
+:set -i./models/Hyperset
+:set -i./models/IncSchemeFuncional
+:set -i./experiments
+
+------------------------------------------------------------
+-- Warnings y opciones útiles
+------------------------------------------------------------
+:set -Wall
+:set -Wno-unused-top-binds
+:set -Wno-unused-imports
+
+------------------------------------------------------------
+-- Color y formato
+------------------------------------------------------------
+:set -fdiagnostics-color=always
+
+------------------------------------------------------------
+-- Comandos convenientes
+------------------------------------------------------------
+-- Recargar TODO cuando cambia un archivo
+:def! rr (\_ -> return ":reload")
+
+-- Atajo para ejecutar un Main específico (opcional)
+:def! runExp (\_ -> return ":main")

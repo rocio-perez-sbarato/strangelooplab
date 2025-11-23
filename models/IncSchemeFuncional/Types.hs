@@ -9,9 +9,7 @@ Portability : portable
 -}
 
 module IncSchemeFuncional.Types where
-
 import Data.Array 
-import Text.Show.Functions ()
 
 -- | Tipos de datos básicos 
 type Variable = String
@@ -54,9 +52,6 @@ type System t = [Statement t]
 {- | Tipo Hereditary Finite Sets con manejo de ciclos 
 y planteo esquemático de dominio e imagen de funciones 
 -}
-
--- Apply from [name, to, value]
--- Por el momento, value no hace nada. Habría que evaluarlo
 data RefHFScheme t
     = Apply [(t, ID, Value)]   -- función aplicada a argumentos
     | RefS ID [RefHFScheme t]    -- conjuntos

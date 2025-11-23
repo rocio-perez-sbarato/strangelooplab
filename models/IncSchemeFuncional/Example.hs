@@ -1,5 +1,4 @@
 module IncSchemeFuncional.Example where 
-
 import IncSchemeFuncional.Types
 
 -- ejemplo: x ⊆ Ω, con δ(x) trascendente y closure definida (sin phi ni psi)

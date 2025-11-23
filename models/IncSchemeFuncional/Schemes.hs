@@ -1,13 +1,12 @@
 module IncSchemeFuncional.Schemes where 
 import IncSchemeFuncional.Types 
 
--- opción 1: separar los preds y llamar a las cosas como Delta x o lo que corresponda
 -- ejemplo: x ⊆ Ω, con δ(x) trascendente y closure definida (sin phi ni psi)
 schemeToSystem :: Inclosure String -> System String
-schemeToSystem (Inclosure omega x label) =
+schemeToSystem (Inclosure omega x delta) =
     [ Equation omega (SetOf [Ref x, Pred omega])        -- Ω = {x, δ(Ω)}
-    , Equation x     (SetOf [Pred label])               -- x = δ(x)
-    , Axiom label    (SetProp [
+    , Equation x     (SetOf [Pred delta])               -- x = δ(x)
+    , Axiom delta    (SetProp [
                         Not (Elem (Ref x) (Ref x)),    -- δ(x) ∉ x
                         Elem (Ref x) (Ref omega)] )    -- δ(x) ⊆ Ω
     , Axiom omega    (SetProp [
@@ -15,6 +14,20 @@ schemeToSystem (Inclosure omega x label) =
                         Elem (Ref omega) (Ref omega)        -- δ(Ω) ⊆ Ω
                     ])
     ]
+
+
+-- me parece mejor así
+-- schemeToSystem :: Inclosure String -> System String
+-- schemeToSystem (Inclosure omega x delta) =
+--     [ Equation omega (SetOf [Ref x, Pred delta])        -- Ω = {x, δ(Ω)}
+--     , Equation x     (SetOf [Pred delta])               -- x = δ(x)
+--     , Axiom delta    (SetProp [
+--                         Not (Elem (Ref x) (Ref x)),         -- δ(x) ∉ x
+--                         Elem (Ref x) (Ref omega),           -- δ(x) ⊆ Ω
+--                         Not (Elem (Ref omega) (Ref omega)), -- δ(Ω) ∉ Ω
+--                         Elem (Ref omega) (Ref omega)        -- δ(Ω) ⊆ Ω
+--                     ])
+--     ]   
 
 -- Borradores
 
