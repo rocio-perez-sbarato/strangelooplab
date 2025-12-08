@@ -1,10 +1,13 @@
+
+
+
 import System.Directory (createDirectoryIfMissing)
 import Data.Array
-import Hyperset.Types
+import Hyperset.Types 
 import Hyperset.Decorator
 import Hyperset.SetToGraph
 import Hyperset.DenoteSystem
-import Examples 
+import Hyperset.Examples 
 import Hyperset.Pretty
 import Hyperset.DotExport
 import HypersetParadox.Sentence(sentenceYablo, yabloToSystem, yabloLabeling, dualLiarSystem, dualLiarLabeling)
@@ -13,7 +16,7 @@ import HypersetParadox.SelfRefParadox
 -- | Ejecuta todo el pipeline
 runPipeline :: String -> System String -> Labeling String -> IO ()
 runPipeline name sys labeling = do
-  let outDir = "output_hyperset"
+  let outDir = "experiments/output_hypersetparadox"
   createDirectoryIfMissing True outDir
 
   let refhfs = denoteSystem sys "M3"

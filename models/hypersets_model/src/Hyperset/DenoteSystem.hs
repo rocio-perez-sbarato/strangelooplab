@@ -54,7 +54,7 @@ convertExpr vmap dict visited expanded n (label, vertex) (SetOf exprs)
 -- === Expr ===
 convertExpr vmap _ _ _ _ _ (Expr t) =
     let v = lookupList t vmap
-    in (RefU (t, v))
+    in RefU (t, v)
 
 -- === Ref ===
 convertExpr vmap dict visited expanded n _ (Ref var)

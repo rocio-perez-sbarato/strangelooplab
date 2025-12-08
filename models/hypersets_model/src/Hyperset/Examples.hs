@@ -8,10 +8,12 @@ Stability   : experimental
 Portability : portable
 -}
 
-module Examples
+module Hyperset.Examples
   ( mutualRef, mutualRefLabeling
-  , omega, omegaLabeling
-  , wellFounded, wellFoundedLabeling
+  , omega, omegaSet, omegaLabeling
+  , omega2, omegaSet2, omegaLabeling2
+  , wellFoundedSystem, wellFoundedSet, wellFoundedLabeling
+  , nonWellFoundedSystem, nonWellFoundedSet, nonWellFoundedLabeling
   , liar, liarLabeling
   , dualLiar, dualLabeling
   , systemM3, labelingM3
@@ -21,7 +23,9 @@ import Hyperset.Types
         HFS(U, S),
         Labeling,
         SetExpr(Expr, Ref, SetOf),
-        System ) 
+        System,
+        RefHFS(RefS, RefU) ) 
+import GHC.Generics (R)
 
 -- === Ejemplo mutualRef ===
 mutualRef :: System String
@@ -39,24 +43,61 @@ mutualRefLabeling _ = S [U "???"]
 omega :: System String
 omega = [ Equation "X" (SetOf [Ref "X"]) ]
 
+omegaSet :: RefHFS String
+omegaSet = RefS 0 [RefU ("X",0)]
+
 omegaLabeling :: Labeling String
-omegaLabeling 0 = S [U "0"]
+omegaLabeling 0 = S [U "X"]
 omegaLabeling _ = S [U "???"]
 
+-- === omega2 ===
+omega2 :: System String
+omega2 = [ Equation "X" (SetOf [Ref "Y"]),
+          Equation "Y" (SetOf [Ref "Y"])]
+
+omegaSet2 :: RefHFS String
+omegaSet2 = RefS 0 [RefS 1 [RefU ("Y",1)]]
+
+omegaLabeling2 :: Labeling String
+omegaLabeling2 0 = S [U "X"]
+omegaLabeling2 1 = S [U "Y"]
+omegaLabeling2 _ = S [U "???"]
+
 -- === wellFounded ===
-wellFounded :: System String
-wellFounded =
-  [ Equation "X" (SetOf [Ref "Y", Ref "Z"])
-  , Equation "Y" (SetOf [Ref "X"])
-  , Equation "Z" (SetOf [Expr "0"])
+wellFoundedSystem :: System String
+wellFoundedSystem =
+  [ Equation "A" (SetOf [Ref "X", Ref "C"])
+  , Equation "C" (SetOf [Ref "X"])
+  , Equation "X" (SetOf [Expr "B"])
   ]
+
+wellFoundedSet :: RefHFS String 
+wellFoundedSet = RefS 0 [RefS 2 [RefU ("B",3)],RefS 1 [RefS 2 [RefU ("B",3)]]]
 
 wellFoundedLabeling :: Labeling String
 wellFoundedLabeling 0 = S [U "X"]
-wellFoundedLabeling 1 = S [U "Y"]
-wellFoundedLabeling 2 = S [U "Z"]
-wellFoundedLabeling 3 = S [U "0"]
+wellFoundedLabeling 1 = S [ ]
+wellFoundedLabeling 2 = S [U "X", U "Y"]
+wellFoundedLabeling 3 = S [U "Y"]
 wellFoundedLabeling _ = S [U "???"]
+
+-- === nonWellFounded ===
+nonWellFoundedSystem :: System String
+nonWellFoundedSystem =
+  [ Equation "X" (SetOf [Ref "Y", Ref "Z"])
+  , Equation "Y" (SetOf [Expr "0"])
+  , Equation "Z" (SetOf [Expr "0", Ref "X"])
+  ]
+
+nonWellFoundedSet :: RefHFS String 
+nonWellFoundedSet = RefS 0 [RefS 1 [RefU ("0",3)],RefS 2 [RefU ("0",3),RefU ("X",0)]]
+
+nonWellFoundedLabeling :: Labeling String
+nonWellFoundedLabeling 0 = S [U "X"]
+nonWellFoundedLabeling 1 = S [U "Y"]
+nonWellFoundedLabeling 2 = S [U "Z"]
+nonWellFoundedLabeling 3 = S [U "0"]
+nonWellFoundedLabeling _ = S [U "???"]
 
 -- === liar ===
 liar :: System String

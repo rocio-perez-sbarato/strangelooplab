@@ -1,0 +1,61 @@
+# Cabal / GHC build artifacts
+dist-newstyle/
+dist/
+dist-docs/
+dist-*/          # cualquier subdist antiguo
+cabal.sandbox.config
+cabal.project.local
+cabal.project.local.lock
+cabal.project.freeze
+
+# Stack (por si acaso)
+.stack-work/
+
+# Haddock & docs
+*.haddock
+doc/
+html/
+docs/
+dist-docs/
+
+# GHC/compiled artefacts
+*.hi
+*.o
+*.dyn_o
+*.dyn_hi
+*.prof
+*.p_hi
+
+# HIE / HLS / IDE caches
+.hie/
+*.hie
+.hls/
+.hls-*
+.hie-*
+
+# Editor / OS
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Cabal environment files
+.ghc.environment.*
+/cabal.sandbox.config
+
+# Binary / generated outputs from app
+app/output_*/
+*.dot
+*.png
+*.svg
+
+# Temporary test / local files
+*.local
+*.tmp
+/tmp/
+
+# Ignore build artefacts in any package subfolder (safety)
+**/dist-newstyle/
+**/dist/
+**/.stack-work/

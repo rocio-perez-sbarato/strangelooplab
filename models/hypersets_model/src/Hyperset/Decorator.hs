@@ -22,10 +22,10 @@ computeDecorations (LabGraph gr label) = listArray (bounds gr)
 -- | Decorado de un vértice 
 decorate :: Graph -> Labeling String -> [Vertex] -> Vertex -> HFS String
 decorate gr label visited v
-      | v `elem` visited = label v -- Agrega el label aunque esté visitado
+      | v `elem` visited = label v -- Si ya lo visitó, solo label
       | null children  = label v
       | otherwise = unionHFS (label v) (S childDecs)
       where
-        children = gr ! v
-        visited' = v : visited
-        childDecs = map (decorate gr label visited') children
+            children = gr ! v
+            visited' = v : visited
+            childDecs = map (decorate gr label visited') children
