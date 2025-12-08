@@ -45,10 +45,7 @@ Thumbs.db
 /cabal.sandbox.config
 
 # Binary / generated outputs from app
-app/output_*/
-*.dot
-*.png
-*.svg
+results/
 
 # Temporary test / local files
 *.local

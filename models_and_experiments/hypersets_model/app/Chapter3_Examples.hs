@@ -10,6 +10,7 @@ import Data.Array
 import System.IO (hFlush, stdout)         
 import Text.Read (readMaybe)               
 import Control.Monad (forM_) 
+import Hyperset.DotToImage
 
 -- | Ejecuta todo el pipeline
 pipelineSystemToSet :: String -> System String -> String -> Labeling String -> IO ()
@@ -26,7 +27,8 @@ pipelineSetToGraph name set labeling = do
 
     putStrLn "== Conjunto --> Grafo ==\n" 
     
-    let outDir = "experiments/output_hypersets"
+    let outDir = "results/output_hypersets/dotFiles"
+    let imgDir = "results/output_hypersets/images"
     createDirectoryIfMissing True outDir
 
     let graph = setToGraph set 
@@ -44,7 +46,9 @@ pipelineSetToGraph name set labeling = do
 
     let viz = showLabGraphViz apg
     let dotFile = outDir ++ "/" ++ name ++ ".dot"
+    let fileName = imgDir ++ "/" ++ name ++ ".png"
     writeFile dotFile viz
+    dotToPng dotFile fileName
 
     putStrLn $ "Grafo en el archivo " ++ dotFile ++ "\n"
     putStrLn "Decoraciones para el grafo\n"

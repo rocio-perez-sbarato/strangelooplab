@@ -1,16 +1,20 @@
-<img src="images/Logo_FAMAF_UNC_color.png" alt="logo famaf unc" width="325" height="100">
 
-# strangelooplab
+<div style="display:flex; gap:10px; align-items:center;">
+  <img src="/assets/img/ouroborus.jpg" alt="Logo 1" style="height:65px;">
+  <img src="/assets/img/Logo_FAMAF_UNC_color.png" alt="Logo 2" style="height:85px;">
+</div>
+
+* * *
+
+# 🐉 strangelooplab 
 ## La computadora como laboratorio filosófico: experimentos y herramientas para el modelado de sistemas reflexivos
-
-Anexo de código del Trabajo Especial de la Licenciatura en Ciencias de la Computación en la Facultad de Matemática, Astronomía, Física y Computación (FaMAFyC)
-
----
 
 ### Ejecución
 
 ```
-strangelooplab\models> ghci .\Hyperset\Main.hs
+cabal build all
+cabal run hypersets
+cabal run hypersetsparadox
 ```
 
 ### Notas y organización

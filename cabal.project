@@ -1,3 +1,3 @@
 packages:
-  models/hypersets_model
-  models/hyperset_paradox_model
+  models_and_experiments/hypersets_model
+  models_and_experiments/hypersets_paradox_model

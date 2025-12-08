@@ -16,7 +16,7 @@ import HypersetParadox.SelfRefParadox
 -- | Ejecuta todo el pipeline
 runPipeline :: String -> System String -> Labeling String -> IO ()
 runPipeline name sys labeling = do
-  let outDir = "experiments/output_hypersetparadox"
+  let outDir = "results/output_hypersetparadox/dotFiles"
   createDirectoryIfMissing True outDir
 
   let refhfs = denoteSystem sys "M3"
