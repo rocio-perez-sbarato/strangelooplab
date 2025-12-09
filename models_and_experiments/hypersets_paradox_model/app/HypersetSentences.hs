@@ -1,6 +1,3 @@
-
-
-
 import System.Directory (createDirectoryIfMissing)
 import Data.Array
 import Hyperset.Types 

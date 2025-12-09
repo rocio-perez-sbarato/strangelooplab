@@ -1,10 +1,9 @@
 
-<div style="display:flex; gap:10px; align-items:center;">
+<div style="display:flex; gap:20px; justify-content: flex-end;">
   <img src="/assets/img/ouroborus.jpg" alt="Logo 1" style="height:65px;">
   <img src="/assets/img/Logo_FAMAF_UNC_color.png" alt="Logo 2" style="height:85px;">
 </div>
 
-* * *
 
 # 🐉 strangelooplab 
 ## La computadora como laboratorio filosófico: experimentos y herramientas para el modelado de sistemas reflexivos

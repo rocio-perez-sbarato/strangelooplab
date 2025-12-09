@@ -6,55 +6,74 @@ import Hyperset.DenoteSystem
 import Hyperset.Pretty
 import Hyperset.DotExport
 import Hyperset.Examples 
+import Hyperset.DotToImage
+import Hyperset.SetToPicture
 import Data.Array
 import System.IO (hFlush, stdout)         
 import Text.Read (readMaybe)               
 import Control.Monad (forM_) 
-import Hyperset.DotToImage
 
--- | Ejecuta todo el pipeline
 pipelineSystemToSet :: String -> System String -> String -> Labeling String -> IO ()
 pipelineSystemToSet name system rootVar labeling = do
-    putStrLn "== Sistema --> Conjunto ==\n" 
+    putStrLn "== Sistema --> Conjunto ==\n"
+
     let set = denoteSystem system rootVar
     putStrLn "Conjunto generado\n"
     print set
     putStrLn "\n"
+
     pipelineSetToGraph name set labeling
 
 pipelineSetToGraph :: String -> RefHFS String -> Labeling String -> IO ()
 pipelineSetToGraph name set labeling = do
 
-    putStrLn "== Conjunto --> Grafo ==\n" 
-    
-    let outDir = "results/output_hypersets/dotFiles"
+    putStrLn "== Conjunto --> Grafo ==\n"
+
+    let dotDir = "results/output_hypersets/dotFiles"
     let imgDir = "results/output_hypersets/images"
-    createDirectoryIfMissing True outDir
+    createDirectoryIfMissing True dotDir
+    createDirectoryIfMissing True imgDir
 
-    let graph = setToGraph set 
-    print graph
-    putStrLn "\n"
+    ----------------------------------------------------------------------
+    -- Grafo sin decorar (cada nodo con su etiqueta original)
+    ----------------------------------------------------------------------
+    let basicLabGraph = setToLabGraph set labeling
+    let basicGraphViz = showLabGraphViz basicLabGraph
 
-    let labgraph = setToLabGraph set labeling
-    let viz1 = showLabGraphViz labgraph
-    let dotFile1 = outDir ++ "/" ++ name ++ "just_labels.dot"
-    writeFile dotFile1 viz1
+    let basicDotFile = dotDir ++ "/" ++ name ++ "_basic.dot"
+    let basicImgFile = imgDir ++ "/" ++ name ++ "_basic.png"
 
+    writeFile basicDotFile basicGraphViz
+    dotToPng basicDotFile basicImgFile
 
-    let decorations = computeDecorations labgraph
-    let apg = setToLabGraph set (decorations !)
+    putStrLn "Grafo sin decoraciones generado.\n"
 
-    let viz = showLabGraphViz apg
-    let dotFile = outDir ++ "/" ++ name ++ ".dot"
-    let fileName = imgDir ++ "/" ++ name ++ ".png"
-    writeFile dotFile viz
-    dotToPng dotFile fileName
+    ----------------------------------------------------------------------
+    -- Picture de un conjunto 
+    ----------------------------------------------------------------------
+    let pictureLabGraph = setToPicture set labeling
+    let pictureGraphViz = showLabGraphViz pictureLabGraph
 
-    putStrLn $ "Grafo en el archivo " ++ dotFile ++ "\n"
-    putStrLn "Decoraciones para el grafo\n"
+    let pictureDotFile = dotDir ++ "/" ++ name ++ ".dot"
+    let pictureImgFile = imgDir ++ "/" ++ name ++ ".png"
+
+    writeFile pictureDotFile pictureGraphViz
+    dotToPng pictureDotFile pictureImgFile
+
+    putStrLn "Grafo visualización generado.\n" 
+    putStrLn $ "Revisar " ++ dotDir ++ "y " ++ imgDir ++ "\n"
+
+    ----------------------------------------------------------------------
+    -- Impresión de decoraciones
+    ----------------------------------------------------------------------
+    let decs = computeDecorations basicLabGraph
+
+    putStrLn "Decoraciones del grafo:\n"
     mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
-        (assocs decorations)
-    putStrLn "\n"
+        (assocs decs)
+
+    putStrLn ""
+
 
 -- lista de ejemplos disponibles
 examplesList :: [(String, System String, String, Labeling String)]
