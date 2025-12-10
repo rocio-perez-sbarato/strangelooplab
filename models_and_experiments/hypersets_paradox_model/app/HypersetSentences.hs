@@ -3,55 +3,111 @@ import Data.Array
 import Hyperset.Types 
 import Hyperset.Decorator
 import Hyperset.SetToGraph
+import Hyperset.SetToPicture
+import Hyperset.DotToImage
 import Hyperset.DenoteSystem
 import Hyperset.Examples 
 import Hyperset.Pretty
 import Hyperset.DotExport
-import HypersetParadox.Sentence(sentenceYablo, yabloToSystem, yabloLabeling, dualLiarSystem, dualLiarLabeling)
-import HypersetParadox.SelfRefParadox
+import HypersetParadox.BuildSentence
+import HypersetParadox.BuildSelfRefSentence
+import HypersetParadox.BuildReferenceChain
+import HypersetParadox.Examples 
+import System.IO (hFlush, stdout)         
+import Text.Read (readMaybe)               
+import Control.Monad (forM_) 
+import Data.Array
+import HypersetParadox.Examples (sysYablo3)
 
--- | Ejecuta todo el pipeline
-runPipeline :: String -> System String -> Labeling String -> IO ()
-runPipeline name sys labeling = do
-  let outDir = "results/output_hypersetparadox/dotFiles"
-  createDirectoryIfMissing True outDir
+pipelineSystemToSet :: String -> System String -> String -> Labeling String -> IO ()
+pipelineSystemToSet name system rootVar labeling = do
+    putStrLn "== Sistema --> Conjunto ==\n"
 
-  let refhfs = denoteSystem sys "M3"
-  putStrLn $ "\nSistema de ecuaciones denotado para '" ++ name ++ "':"
-  print refhfs
+    let set = denoteSystem system rootVar
+    putStrLn "Conjunto generado\n"
+    print set
+    putStrLn "\n"
 
-  let labgraph = setToLabGraph refhfs labeling
-  let decorations = computeDecorations labgraph
-  let dotFile = outDir ++ "/" ++ name ++ ".dot"
-  writeFile dotFile (showLabGraphViz labgraph)
+    pipelineSetToGraph name set labeling
 
-  putStrLn $ "\nGrafo en el archivo: " ++ dotFile
-  putStrLn $ "\nDecoraciones para el sistema '" ++ name ++ "':"
-  mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
-        (assocs decorations)
+pipelineSetToGraph :: String -> RefHFS String -> Labeling String -> IO ()
+pipelineSetToGraph name set labeling = do
 
+    putStrLn "== Conjunto --> Grafo ==\n"
+
+    let dotDir = "results/output_hypersetsparadox/dotFiles"
+    let imgDir = "results/output_hypersetparadox/images"
+    createDirectoryIfMissing True dotDir
+    createDirectoryIfMissing True imgDir
+
+    ----------------------------------------------------------------------
+    -- Grafo sin decorar (cada nodo con su etiqueta original)
+    ----------------------------------------------------------------------
+    let basicLabGraph = setToLabGraph set labeling
+    let basicGraphViz = showLabGraphViz basicLabGraph
+
+    let basicDotFile = dotDir ++ "/" ++ name ++ "_basic.dot"
+    let basicImgFile = imgDir ++ "/" ++ name ++ "_basic.png"
+
+    writeFile basicDotFile basicGraphViz
+    dotToPng basicDotFile basicImgFile
+
+    putStrLn "Grafo sin decoraciones generado.\n"
+
+    ----------------------------------------------------------------------
+    -- Picture de un conjunto 
+    ----------------------------------------------------------------------
+    let pictureLabGraph = setToPicture set labeling
+    let pictureGraphViz = showLabGraphViz pictureLabGraph
+
+    let pictureDotFile = dotDir ++ "/" ++ name ++ ".dot"
+    let pictureImgFile = imgDir ++ "/" ++ name ++ ".png"
+
+    writeFile pictureDotFile pictureGraphViz
+    dotToPng pictureDotFile pictureImgFile
+
+    putStrLn "Grafo visualización generado.\n" 
+    putStrLn $ "Revisar " ++ dotDir ++ "y " ++ imgDir ++ "\n"
+
+    ----------------------------------------------------------------------
+    -- Impresión de decoraciones
+    ----------------------------------------------------------------------
+    let decs = computeDecorations basicLabGraph
+
+    putStrLn "Decoraciones del grafo:\n"
+    mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
+        (assocs decs)
+
+-- lista de ejemplos disponibles
+examplesList :: [(String, System String, String, Labeling String)]
+examplesList =
+  [ ("liar"           , liarParadoxSystem , "q", liarParadoxLabeling)
+  , ("dualLiar"       , dualLiarSystem , "p_", dualLiarLabeling)
+  , ("yablo3"         , sysYablo3, "s1", labelingYablo3)
+
+  ]
+
+-- menú interactivo
+interactiveMenu :: IO ()
+interactiveMenu = do
+  putStrLn "=== Ejemplos del capítulo 4 ==="
+  forM_ (zip [1..] examplesList) $ \(i,(name,_,_,_)) ->
+    putStrLn $ show i ++ ") " ++ name
+  putStrLn "a) run all"
+  putStrLn "q) quit"
+  putStr "Elección: "
+  hFlush stdout
+  sel <- getLine
+  case sel of
+    "q" -> putStrLn "Saliendo..."
+    "a" -> mapM_ (\(n,s,r,l) -> pipelineSystemToSet n s r l) examplesList
+    _   -> case readMaybe sel :: Maybe Int of
+             Just k | k >= 1 && k <= length examplesList -> do
+                       let (name,sys,root,label) = examplesList !! (k-1)
+                       pipelineSystemToSet name sys root label
+                       putStrLn "" >> interactiveMenu
+             _ -> putStrLn "Opción inválida.\n" >> interactiveMenu
+
+-- reemplazo main para usar el menú interactivo
 main :: IO ()
-main = do
-  putStrLn "=== Hyperset Graph Pipeline ===\n"
-
-  -- Primer sistema: M3
-  putStrLn "\nSistema M3:"
-  print systemM3
-  runPipeline "sistema_M3" systemM3 labelingM3
-
-  -- Segundo sistema: Yablo 
-  let sentYablo = sentenceYablo 1 2
-  let sysYablo = yabloToSystem sentYablo
-  let labelingYablo = yabloLabeling sentYablo
-
-  putStrLn "\nSistema Yablo:"
-  print sysYablo
-  runPipeline "sistema_Yablo" sysYablo labelingYablo
-
-  
-  let sysDualLiar = dualLiarSystem 
-  let labelingDualLiar = dualLiarLabeling
-
-  putStrLn "\nSistema Dual Liar:"
-  print sysDualLiar
-  runPipeline "sistema_dual_liar" sysDualLiar labelingDualLiar
+main = interactiveMenu

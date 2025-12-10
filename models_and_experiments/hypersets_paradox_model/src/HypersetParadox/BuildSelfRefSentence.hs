@@ -8,27 +8,10 @@ Stability   : experimental
 Portability : portable
 -}
 
-module HypersetParadox.SelfRefParadox
-    ( Paradox (..),
-        paradoxToSystem,
-        paradoxLabeling,
-        liarParadox,
-        russellParadox,
-        barberParadox,
-        knownParadoxes,
-        refE, refEq0, refq0, refq, ref0 
-    )
-where
+module HypersetParadox.BuildSelfRefSentence where
 import Hyperset.Types
         ( HFS(..), Equation(..), SetExpr(Expr, Ref, SetOf), System, Labeling)
 import Hyperset.Operations ( unionHFS ) 
-import System.Directory (createDirectoryIfMissing)
-import Data.Array ( assocs )
-import Hyperset.Decorator ( computeDecorations )
-import Hyperset.SetToGraph ( setToLabGraph )
-import Hyperset.DenoteSystem ( denoteSystem )
-import Hyperset.Pretty ( prettyHFS )
-import Hyperset.DotExport ( showLabGraphViz, showGraphViz )
 
 -- * Tipo de datos de paradoja autorreferencial
 
@@ -86,38 +69,3 @@ refEq0  (Paradox sub pred app) = pred ++ sub ++ app ++ "_"
 refq0   (Paradox sub _ app)    = sub ++ app ++ "_"
 refq    (Paradox sub _ _)      = sub ++ "_"
 ref0    (Paradox _ _ app)      = app ++ "_"
-
--- * Paradojas
-
-{- | El mentiroso. 
-    q = "Esta oración", E = "Es verdadera", 0 = False
--}
-liarParadox :: Paradox
-liarParadox = Paradox "q" "E" "0"
-
-{- | La paradoja de Russell
-    R = "El conjunto de Russell", E = "Pertenece a sí mismo", 0 = False
--}
-russellParadox :: Paradox
-russellParadox = Paradox "R" "E" "0"
-
-{- | Ejemplo: El barbero
-    B = "El barbero", E = "Se afeita a sí mismo", 0 = False
--}
-barberParadox :: Paradox
-barberParadox = Paradox "B" "E" "0"
-
--- | Lista de paradojas disponibles
-knownParadoxes :: [Paradox]
-knownParadoxes =
-    [ liarParadox,
-        russellParadox,
-        barberParadox
-    ]
-
-{- | Ejecuta el pipeline completo para un sistema:
-   * Denotación del sistema
-   * Construcción del grafo
-   * Escritura del archivo DOT
-   * Impresión de decoraciones
--}
