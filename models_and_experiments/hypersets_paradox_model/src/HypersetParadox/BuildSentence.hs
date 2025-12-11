@@ -45,11 +45,11 @@ sentenceToSystem s@(Sentence name sub pred app) =
         qRef    = refq s
         zeroRef = ref0 s
     in
-    [ Equation (name ++ "_")    (SetOf [Ref eRef, Ref eq0Ref])
+    [ Equation name    (SetOf [Ref eRef, Ref eq0Ref])
     , Equation eRef    (SetOf [Expr pred])
     , Equation eq0Ref  (SetOf [Ref eRef, Ref q0Ref])
     , Equation q0Ref   (SetOf [Ref qRef, Ref zeroRef])
-    , Equation qRef    (SetOf [Ref (sub ++ "_")])
+    , Equation qRef    (SetOf [Ref sub])
     , Equation zeroRef (SetOf [Expr app])
     ]
 

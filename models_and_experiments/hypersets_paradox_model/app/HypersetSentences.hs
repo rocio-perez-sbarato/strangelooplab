@@ -1,5 +1,4 @@
 import System.Directory (createDirectoryIfMissing)
-import Data.Array
 import Hyperset.Types 
 import Hyperset.Decorator
 import Hyperset.SetToGraph
@@ -23,7 +22,10 @@ pipelineSystemToSet :: String -> System String -> String -> Labeling String -> I
 pipelineSystemToSet name system rootVar labeling = do
     putStrLn "== Sistema --> Conjunto ==\n"
 
+    print system 
+
     let set = denoteSystem system rootVar
+
     putStrLn "Conjunto generado\n"
     print set
     putStrLn "\n"
@@ -36,7 +38,7 @@ pipelineSetToGraph name set labeling = do
     putStrLn "== Conjunto --> Grafo ==\n"
 
     let dotDir = "results/output_hypersetsparadox/dotFiles"
-    let imgDir = "results/output_hypersetparadox/images"
+    let imgDir = "results/output_hypersetsparadox/images"
     createDirectoryIfMissing True dotDir
     createDirectoryIfMissing True imgDir
 
