@@ -16,7 +16,6 @@ import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)               
 import Control.Monad (forM_) 
 import Data.Array
-import HypersetParadox.Examples (sysYablo3)
 
 pipelineSystemToSet :: String -> System String -> String -> Labeling String -> IO ()
 pipelineSystemToSet name system rootVar labeling = do
@@ -69,7 +68,7 @@ pipelineSetToGraph name set labeling = do
     dotToPng pictureDotFile pictureImgFile
 
     putStrLn "Grafo visualización generado.\n" 
-    putStrLn $ "Revisar " ++ dotDir ++ "y " ++ imgDir ++ "\n"
+    putStrLn $ "Revisar " ++ dotDir ++ " y " ++ imgDir ++ "\n"
 
     ----------------------------------------------------------------------
     -- Impresión de decoraciones

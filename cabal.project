@@ -1,3 +1,4 @@
 packages:
   models_and_experiments/hypersets_model
   models_and_experiments/hypersets_paradox_model
+  models_and_experiments/hyperset_predicates

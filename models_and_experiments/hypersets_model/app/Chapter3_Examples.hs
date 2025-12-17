@@ -61,7 +61,7 @@ pipelineSetToGraph name set labeling = do
     dotToPng pictureDotFile pictureImgFile
 
     putStrLn "Grafo visualización generado.\n" 
-    putStrLn $ "Revisar " ++ dotDir ++ "y " ++ imgDir ++ "\n"
+    putStrLn $ "Revisar " ++ dotDir ++ " y " ++ imgDir ++ "\n"
 
     ----------------------------------------------------------------------
     -- Impresión de decoraciones
