@@ -1,5 +1,5 @@
-module HypersetPredicates.Schemes where 
-import HypersetPredicates.Types 
+module HypersetPredicate.Schemes where 
+import HypersetPredicate.Types 
 
 -- | Traduce un Inclosure Scheme a un sistema de ecuaciones y predicados/funciones booleanas.
 --

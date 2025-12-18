@@ -1,19 +1,20 @@
 cabal-version: 2.4
-name: hypersetspredicates
+name: hypersetspredicate
 version: 0.1.0.0
 build-type: Simple
 
 library
   exposed-modules:
-      HypersetPredicates.Schemes
-    , HypersetPredicates.Types
-    , HypersetPredicates.SetToLabGraph
-    , HypersetPredicates.DenoteSystem
-    , HypersetPredicates.ToDot
-    , HypersetPredicates.DotToImage
-    , HypersetPredicates.Examples
-    , HypersetPredicates.VertexOperations
-    , HypersetPredicates.Predicates
+      HypersetPredicate.Schemes
+    , HypersetPredicate.Types
+    , HypersetPredicate.SetToGraph
+    , HypersetPredicate.DenoteSystem
+    , HypersetPredicate.ToDot
+    , HypersetPredicate.DotToImage
+    , HypersetPredicate.Examples
+    , HypersetPredicate.Vertex
+    , HypersetPredicate.Predicate
+    , HypersetPredicate.Equation
   hs-source-dirs: src
   default-language: Haskell2010
   build-depends:
@@ -24,7 +25,7 @@ library
     , directory
     , process
 
-executable hypersets-predicates
+executable hypersets-predicate
   main-is: Main.hs
   hs-source-dirs: app
   default-language: Haskell2010
@@ -32,7 +33,7 @@ executable hypersets-predicates
       base >=4.14 && <5
     , hypersets
     , hypersetsparadox
-    , hypersetspredicates  
+    , hypersetspredicate  
     , containers
     , array
     , directory

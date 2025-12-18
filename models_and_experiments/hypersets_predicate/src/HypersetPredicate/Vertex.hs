@@ -1,19 +1,11 @@
-module HypersetPredicates.VertexOperations where 
+module HypersetPredicate.Vertex where 
 
-import HypersetPredicates.Types 
-
--- =======================================
--- | Devuelve el int asociado a una variable
--- =======================================
-lookupList :: String -> [(String, Vertex)] -> Vertex
-lookupList key vmap =
-    case lookup key vmap of
-      Just v  -> v
-      Nothing -> error $ "variable no encontrada -> " ++ key
+import HypersetPredicate.Types 
 
 -- =======================================
 -- | Construye mapping de variables a vértices
 -- =======================================
+  
 getSetExprElements :: System String -> [String]
 getSetExprElements = uniq . concatMap extractFromEquation 
   where

@@ -1,5 +1,5 @@
-module HypersetPredicates.ToDot where 
-import HypersetPredicates.Types
+module HypersetPredicate.ToDot where 
+import HypersetPredicate.Types
 import Data.Array 
 
 -- | DOT export para LabGraph con Maybe Label en aristas

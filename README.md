@@ -14,6 +14,7 @@
 cabal build all
 cabal run hypersets
 cabal run hypersetsparadox
+cabal run hypersetspredicate
 ```
 
 ### Notas y organización

@@ -9,8 +9,8 @@ Portability : portable
 -}
 
 module Hyperset.Operations where
-import Hyperset.Types ( HFS(..), RefHFS(..) )
-import qualified Data.Set as Set
+import Hyperset.Types 
+
 
 {- | Unión de conjuntos
 Caso U: ponemos los U x en una lista para meterlos en un conjunto
@@ -38,16 +38,3 @@ justHereditary (RefS x xs) = S newList
     where 
         newList = map justHereditary xs 
 
-{- | Cuenta los vértices únicos en el RefHFS
-      Contempla ciclos y referencias entre vértices
-      Evita repeticiones usando un Set
--}
-countVertices :: RefHFS t -> Int
-countVertices refhfs = Set.size (collectVertices refhfs Set.empty)
-  where
-    collectVertices (RefU (_, v)) seen
-      | v `Set.member` seen = seen
-      | otherwise           = Set.insert v seen
-    collectVertices (RefS v children) seen
-      | v `Set.member` seen = seen
-      | otherwise           = foldr collectVertices (Set.insert v seen) children

@@ -12,7 +12,7 @@ Portability : portable
 module Hyperset.SetToGraph where 
 import Hyperset.Types
       ( LabGraph(..), Labeling, Graph, RefHFS(..), ID, Label ) 
-import Hyperset.Operations ( countVertices ) 
+import Hyperset.Vertex ( countVertices ) 
 import Data.Array ( listArray )
 import Data.List (nub)
 

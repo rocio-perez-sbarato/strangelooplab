@@ -1,14 +1,10 @@
-module HypersetPredicates.DenoteSystem where
-import HypersetPredicates.Predicates 
-import HypersetPredicates.VertexOperations 
-import HypersetPredicates.Types
+module HypersetPredicate.DenoteSystem where
+import HypersetPredicate.Predicate
+import HypersetPredicate.Vertex
+import Hyperset.Vertex (lookupList)
+import HypersetPredicate.Equation
+import HypersetPredicate.Types
 import Data.List
-
--- =======================================
--- | Construcción de diccionarios
--- =======================================
-buildDict :: System t -> [(Variable, SetExpr t)]
-buildDict system = [(v, e) | Equation v e <- system]
 
 -- =======================================
 -- | Conversión general a RefHFScheme

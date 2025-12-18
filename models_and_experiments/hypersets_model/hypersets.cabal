@@ -22,6 +22,8 @@ library
     , Hyperset.Types
     , Hyperset.Pretty
     , Hyperset.Operations
+    , Hyperset.Vertex 
+    , Hyperset.Equation
     , Hyperset.DotToImage
     , Hyperset.SetToPicture
   hs-source-dirs:      src

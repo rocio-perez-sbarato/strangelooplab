@@ -1,6 +1,7 @@
-module HypersetPredicates.Predicates where
-import HypersetPredicates.Types
-import HypersetPredicates.VertexOperations
+module HypersetPredicate.Predicate where
+import HypersetPredicate.Types
+import HypersetPredicate.Vertex
+import Hyperset.Vertex
 import Data.List
 
 -- | Construye un diccionario de funciones a partir del sistema.

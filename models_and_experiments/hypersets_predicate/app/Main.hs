@@ -1,11 +1,11 @@
 import System.Directory (createDirectoryIfMissing)
-import HypersetPredicates.Types
-import HypersetPredicates.ToDot
+import HypersetPredicate.Types
+import HypersetPredicate.ToDot
 import Hyperset.DotToImage
-import HypersetPredicates.Examples
-import HypersetPredicates.Schemes
-import HypersetPredicates.DenoteSystem 
-import HypersetPredicates.SetToLabGraph
+import HypersetPredicate.Examples
+import HypersetPredicate.Schemes
+import HypersetPredicate.DenoteSystem 
+import HypersetPredicate.SetToGraph
 
 schemes :: [(String, Inclosure String, Variable)]
 schemes =
@@ -15,7 +15,6 @@ schemes =
 
 processInclosure :: (String, Inclosure String, Variable) -> IO ()
 processInclosure (name, inclosure, root) = do
-    putStrLn $ "Procesando " ++ name
 
     -- Caso normal
     pipelineSystemToGraph name (schemeToSystem inclosure) root
@@ -40,7 +39,7 @@ pipelineSystemToGraph name system root = do
     writeFile dotFile dot
     dotToPng dotFile imgFile
 
-    putStrLn $ "Diagrama del Inclosure Scheme para el caso " ++ name ++ " generado.\n."
+    putStrLn $ "Diagrama del Inclosure Scheme para el caso " ++ name ++ " generado.\n"
 
 main :: IO ()
 main = do

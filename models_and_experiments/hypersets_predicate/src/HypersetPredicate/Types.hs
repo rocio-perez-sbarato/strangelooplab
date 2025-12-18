@@ -1,4 +1,4 @@
-module HypersetPredicates.Types where
+module HypersetPredicate.Types where
 
 import Data.Array 
 
