@@ -1,5 +1,5 @@
-module HypersetPredicate.Schemes where 
-import HypersetPredicate.Types 
+module HypersetIncScheme.Schemes where 
+import HypersetIncScheme.Types 
 
 -- | Traduce un Inclosure Scheme a un sistema de ecuaciones y predicados/funciones booleanas.
 --
@@ -9,9 +9,6 @@ import HypersetPredicate.Types
 --
 --   • Closure:     δ(x) ∈ Ω
 --   • Transcendence: δ(x) ∉ x
---
---   El sistema resultante no pretende ser computacionalmente efectivo,
---   sino una codificación estructural del esquema de Inclosure.
 schemeToSystem :: Inclosure String -> System String
 schemeToSystem (Inclosure omega x delta) =
     [ Equation omega (SetOf [Ref x])     -- Ω = {x}
@@ -21,11 +18,7 @@ schemeToSystem (Inclosure omega x delta) =
                             Elem (Ref x) (Ref omega)] )   -- δ(x) ⋲ Ω
     ]                                                                                                                                                   
 
--- | Caso borde del esquema de Inclosure.
---   Aquí la función δ se aplica a Ω en lugar de a x, produciendo una
---   auto-aplicación directa δ(Ω) ∈ Ω.
---   El sistema incluye simultáneamente la afirmación y la negación
---   de la misma pertenencia, generando una contradicción explícita.
+-- | Caso borde del esquema de Inclosure
 schemeBorderCase :: Inclosure String -> System String
 schemeBorderCase (Inclosure omega x delta) =
     [ Equation omega (SetOf [Pred delta])    

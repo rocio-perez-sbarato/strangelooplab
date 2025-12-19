@@ -1,6 +1,6 @@
-module HypersetPredicate.Equation where 
+module HypersetIncScheme.Equation where 
 
-import HypersetPredicate.Types 
+import HypersetIncScheme.Types 
 
 -- | Diccionario variable -> expresión
 buildDict :: System t -> [(Variable, SetExpr t)]

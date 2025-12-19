@@ -1,6 +1,6 @@
-module HypersetPredicate.Vertex where 
+module HypersetIncScheme.Vertex where 
 
-import HypersetPredicate.Types 
+import HypersetIncScheme.Types 
 
 -- =======================================
 -- | Construye mapping de variables a vértices

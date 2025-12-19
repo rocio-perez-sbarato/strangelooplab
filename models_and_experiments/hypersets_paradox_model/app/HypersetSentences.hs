@@ -11,6 +11,7 @@ import Hyperset.DotExport
 import HypersetParadox.BuildSentence
 import HypersetParadox.BuildSelfRefSentence
 import HypersetParadox.BuildReferenceChain
+import HypersetParadox.BuildFunctionApplication
 import HypersetParadox.Examples 
 import System.IO (hFlush, stdout)         
 import Text.Read (readMaybe)               
@@ -36,8 +37,8 @@ pipelineSetToGraph name set labeling = do
 
     putStrLn "== Conjunto --> Grafo ==\n"
 
-    let dotDir = "results/output_hypersetsparadox/dotFiles"
-    let imgDir = "results/output_hypersetsparadox/images"
+    let dotDir = "results/output_hypersets_paradox/dotFiles"
+    let imgDir = "results/output_hypersets_paradox/images"
     createDirectoryIfMissing True dotDir
     createDirectoryIfMissing True imgDir
 
@@ -85,7 +86,7 @@ examplesList =
   [ ("liar"           , liarParadoxSystem , "q", liarParadoxLabeling)
   , ("dualLiar"       , dualLiarSystem , "p_", dualLiarLabeling)
   , ("yablo3"         , sysYablo3, "s1", labelingYablo3)
-
+  , ("closureIncScheme" , closureIncSchemeSystem, "inc", closureLabeling (Inclosure "omega" "x" "delta"))
   ]
 
 -- menú interactivo

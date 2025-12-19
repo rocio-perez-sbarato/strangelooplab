@@ -1,6 +1,6 @@
-module HypersetPredicate.SetToGraph where
+module HypersetIncScheme.SetToGraph where
 
-import HypersetPredicate.Types
+import HypersetIncScheme.Types
 import Data.Array ( assocs, bounds, listArray )
 import Data.List ( nub ) 
 

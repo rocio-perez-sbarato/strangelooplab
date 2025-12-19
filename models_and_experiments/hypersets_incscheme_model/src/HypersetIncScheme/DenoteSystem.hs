@@ -1,9 +1,9 @@
-module HypersetPredicate.DenoteSystem where
-import HypersetPredicate.Predicate
-import HypersetPredicate.Vertex
+module HypersetIncScheme.DenoteSystem where
+import HypersetIncScheme.Predicate
+import HypersetIncScheme.Vertex
 import Hyperset.Vertex (lookupList)
-import HypersetPredicate.Equation
-import HypersetPredicate.Types
+import HypersetIncScheme.Equation
+import HypersetIncScheme.Types
 import Data.List
 
 -- =======================================

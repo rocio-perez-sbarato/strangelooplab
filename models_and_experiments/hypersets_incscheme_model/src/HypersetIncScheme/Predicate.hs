@@ -1,6 +1,6 @@
-module HypersetPredicate.Predicate where
-import HypersetPredicate.Types
-import HypersetPredicate.Vertex
+module HypersetIncScheme.Predicate where
+import HypersetIncScheme.Types
+import HypersetIncScheme.Vertex
 import Hyperset.Vertex
 import Data.List
 

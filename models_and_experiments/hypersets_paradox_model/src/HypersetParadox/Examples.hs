@@ -4,6 +4,12 @@ import HypersetParadox.BuildSelfRefSentence
 import HypersetParadox.BuildSentence
 import HypersetParadox.BuildReferenceChain
 import Hyperset.Types
+import HypersetParadox.BuildFunctionApplication
+
+-- * Aplicación de predicados
+
+closureIncSchemeSystem :: System String 
+closureIncSchemeSystem = closureToSystem (Inclosure "omega" "x" "delta")
 
 -- * Paradojas sin autorreferencia
 

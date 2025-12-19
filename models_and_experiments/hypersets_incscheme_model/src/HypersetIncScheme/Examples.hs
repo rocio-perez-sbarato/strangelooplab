@@ -1,6 +1,6 @@
-module HypersetPredicate.Examples where 
-import HypersetPredicate.Types
-import HypersetPredicate.Schemes
+module HypersetIncScheme.Examples where 
+import HypersetIncScheme.Types
+import HypersetIncScheme.Schemes
 
 generalScheme :: Inclosure String 
 generalScheme = Inclosure "Omega" "x" "d"

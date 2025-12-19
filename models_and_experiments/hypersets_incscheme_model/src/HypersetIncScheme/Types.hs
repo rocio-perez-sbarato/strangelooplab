@@ -1,4 +1,4 @@
-module HypersetPredicate.Types where
+module HypersetIncScheme.Types where
 
 import Data.Array 
 
@@ -38,6 +38,10 @@ data Statement t
 
 -- | Un sistema es una lista de enunciados 
 type System t = [Statement t]
+
+-- | Tipo Hereditary Finite Sets 
+data HFS t = S [HFS t] | U t 
+    deriving (Eq, Show)
 
 -- *************************************
 

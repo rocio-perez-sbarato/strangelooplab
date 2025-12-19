@@ -1,4 +1,4 @@
-module HypersetPredicate.DotToImage where 
+module HypersetIncScheme.DotToImage where 
 
 import System.Process (callProcess)
 

@@ -1,11 +1,11 @@
 import System.Directory (createDirectoryIfMissing)
-import HypersetPredicate.Types
-import HypersetPredicate.ToDot
+import HypersetIncScheme.Types
+import HypersetIncScheme.ToDot
 import Hyperset.DotToImage
-import HypersetPredicate.Examples
-import HypersetPredicate.Schemes
-import HypersetPredicate.DenoteSystem 
-import HypersetPredicate.SetToGraph
+import HypersetIncScheme.Examples
+import HypersetIncScheme.Schemes
+import HypersetIncScheme.DenoteSystem 
+import HypersetIncScheme.SetToGraph
 
 schemes :: [(String, Inclosure String, Variable)]
 schemes =
@@ -28,7 +28,7 @@ pipelineSystemToGraph name system root = do
     let set = denoteSystem system root
     let dot = showLabGraphViz (setToLabGraph set)
 
-    let baseDir = "results/output_hypersetspredicates"
+    let baseDir = "results/output_hypersets_incscheme"
     let dotDir  = baseDir ++ "/dotFiles"
     let imgDir  = baseDir ++ "/images"
     let dotFile = dotDir ++ "/" ++ name ++ ".dot"
@@ -45,4 +45,4 @@ main :: IO ()
 main = do
     putStrLn "== Scheme a Diagrama ==\n"
     mapM_ processInclosure schemes
-    putStrLn "\nTodos los esquemas fueron generados."
+    putStrLn "Todos los esquemas fueron generados."
