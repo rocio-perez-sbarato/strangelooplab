@@ -53,40 +53,61 @@ buildLabeling name sub =
         jmax = getLastNumber sub    
     in S [ S [ U (sentenceName j) ] | j <- [(i+1)..jmax] ]
 
+buildRefsName :: String -> String -> String
+buildRefsName name sub =
+    let i    = read (drop 1 name)
+        jmax = getLastNumber sub
+        refs =
+            if i == jmax - 1
+            then [sentenceName jmax]
+            else [sentenceName j | j <- [(i+1)..jmax]]
+    in concat refs
+
+buildSimpleLabel :: String -> String -> String
+buildSimpleLabel name sub = 
+    let i = read (drop 1 name)       
+        jmax = getLastNumber sub    
+    in concatMap sentenceName [i+1..jmax]
+
 {- | Pasaje de paradoja de Yablo a un sistema de ecuaciones. 
 Notar la herencia en los nombres de variables, referencias y expresiones. 
 -}
 yabloToSystem :: Sentence -> System String
-yabloToSystem s@(Sentence name sub pred app) =
+yabloToSystem s@(Sentence name sub pred app) = 
     let eRef    = refE s
-        eq0Ref  = refEq0 s
+        eqq0Ref = refEqq0 s
+        qq0Ref  = refQq0 s
         q0Ref   = refq0 s
         qRef    = refq s
         zeroRef = ref0 s
     in
-    [ Equation name   (SetOf [Ref eRef, Ref eq0Ref])
+    [ Equation name    (SetOf [Ref eRef, Ref eqq0Ref])
     , Equation eRef    (SetOf [Expr pred])
-    , Equation eq0Ref  (SetOf [Ref eRef, Ref q0Ref])
+    , Equation eqq0Ref (SetOf [Ref eRef, Ref qq0Ref])
+    , Equation qq0Ref  (SetOf [Ref qRef, Ref q0Ref])
     , Equation q0Ref   (SetOf [Ref qRef, Ref zeroRef])
     , Equation qRef    (SetOf (buildRefsList name sub))
     , Equation zeroRef (SetOf [Expr app])
     ]
 
 {- | Creación del labeling para las ecuaciones de la sentencia i de la paradoja de Yablo con profundidad n. 
-Notar la herencia en las etiquetas. -}
+Notar la herencia en las etiquetas. 
+-}
+
 yabloLabelingEq :: Int -> Sentence -> Labeling String
-yabloLabelingEq i (Sentence name sub pred app) = \ix ->
+yabloLabelingEq i s@(Sentence name sub pred app) = \ix ->
     case ix of
         0 -> S [U name]
-        1 -> S [S [U pred]]
-        2 -> unionHFS (S [S [U pred], S [U app]]) (sentenceNamesHFS (read (getNumber name)) (getLastNumber sub))
-        3 -> unionHFS (sentenceNamesHFS (read (getNumber name)) (getLastNumber sub)) (S [S [U app]])
-        4 -> buildLabeling name sub
-        5 -> S [S [U app]]
+        1 -> S [U (refE s)]
+        2 -> S [U (pred ++ (buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")]
+        3 -> S [U ((buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")]
+        4 -> S [U ((buildSimpleLabel name sub) ++ app ++ "_")]
+        5 -> S [U (buildRefsName name sub ++ "_")]
+        6 -> S [U (ref0 s)]
         _ -> S[ U "???"]
 
 {- | Creación del labeling para las expresiones de la sentencia i de la paradoja de Yablo con profundidad n. -}
-yabloLabelingExpr :: Sentence -> Labeling String
+yabloLabelingExpr :: Sentence -> Labeling String 
 yabloLabelingExpr (Sentence name sub pred app) = \ix ->
     case ix of
         0 -> S [U pred]
@@ -96,9 +117,16 @@ yabloLabelingExpr (Sentence name sub pred app) = \ix ->
 
 -- | Etiquetado combinado para la sentencia i de la paradoja de Yablo con profundidad n.
 yabloLabeling :: Sentence -> Labeling String
-yabloLabeling s@(Sentence name sub pred app) ix
-    | ix < 6 = yabloLabelingEq (read (drop 1 name)) s ix
-    | otherwise = sentenceLabelingExpr s (ix - 6) 
+yabloLabeling s@(Sentence name _ _ _) ix
+    | ix < eqSize =
+        yabloLabelingEq (read (drop 1 name)) s ix
+    | ix < eqSize + exprSize =
+        yabloLabelingExpr s (ix - eqSize)
+    | otherwise =
+        S [U "???"]
+    where
+        eqSize   = 7
+        exprSize = 3   
 
 {-| Construcción del sistema de ecuaciones correspondiente a la paradoja de 
 Yablo con profundidad n. La profunidad n significa que se detiene en la última sentencia 
@@ -112,11 +140,18 @@ Yablo con profundidad n.
 -}
 yabloFamilyLabeling :: Int -> Labeling String
 yabloFamilyLabeling n =
-    let sentences     = [sentenceYablo i n | i <- [1..n-1]]
-        labelingsEq   = [yabloLabelingEq i s | (i, s) <- zip [1..n-1] sentences]
-        labelingsExprInit = [sentenceLabelingExpr s | s <- take (n - 2) sentences]
-        labelingExprLast  = yabloLabelingExpr (sentences !! (n - 2))
-        labelingsExpr     = labelingsExprInit ++ [labelingExprLast]
-        exprSizes         = replicate (n - 2) 2 ++ [3]
+    let sentences = [sentenceYablo i n | i <- [1..n-1]]
+
+        labelingsEq = [yabloLabelingEq i s | (i, s) <- zip [1..] sentences]
+
+        eqSizes = replicate (n - 1) 7
+
+        labelingsExprInit = map sentenceLabelingExpr (init sentences)
+        labelingExprLast = yabloLabelingExpr (last sentences)
+
+        exprSizes = replicate (n - 2) 2 ++ [3]
+        labelingsExpr = labelingsExprInit ++ [labelingExprLast]
+
     in labelingCombinedList $
-        zip (repeat 6) labelingsEq ++ zip exprSizes labelingsExpr
+            zip eqSizes labelingsEq
+        ++ zip exprSizes labelingsExpr

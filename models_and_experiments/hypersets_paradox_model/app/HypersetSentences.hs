@@ -48,13 +48,13 @@ pipelineSetToGraph name set labeling = do
     let basicLabGraph = setToLabGraph set labeling
     let basicGraphViz = showLabGraphViz basicLabGraph
 
-    let basicDotFile = dotDir ++ "/" ++ name ++ "_basic.dot"
-    let basicImgFile = imgDir ++ "/" ++ name ++ "_basic.png"
+    let basicDotFile = dotDir ++ "/" ++ name ++ "_labels.dot"
+    let basicImgFile = imgDir ++ "/" ++ name ++ "_labels.png"
 
     writeFile basicDotFile basicGraphViz
     dotToPng basicDotFile basicImgFile
 
-    putStrLn "Grafo sin decoraciones generado.\n"
+    putStrLn "Grafo etiquetado simple generado.\n"
 
     ----------------------------------------------------------------------
     -- Picture de un conjunto 
@@ -62,13 +62,23 @@ pipelineSetToGraph name set labeling = do
     let pictureLabGraph = setToPicture set labeling
     let pictureGraphViz = showLabGraphViz pictureLabGraph
 
-    let pictureDotFile = dotDir ++ "/" ++ name ++ ".dot"
-    let pictureImgFile = imgDir ++ "/" ++ name ++ ".png"
+    let pictureDotFile = dotDir ++ "/" ++ name ++ "_full_picture.dot"
+    let pictureImgFile = imgDir ++ "/" ++ name ++ "_full_picture.png"
 
     writeFile pictureDotFile pictureGraphViz
     dotToPng pictureDotFile pictureImgFile
 
-    putStrLn "Grafo visualización generado.\n" 
+    let labeling = computeDecorationsShort basicLabGraph
+    let shortPictureLabGraph = setToLabGraph set (labeling !)
+    let shortPictureGraphViz = showLabGraphViz shortPictureLabGraph
+
+    let shortPictureDotFile = dotDir ++ "/" ++ name ++ "_short_picture.dot"
+    let shortPictureImgFile = imgDir ++ "/" ++ name ++ "_short_picture.png"
+
+    writeFile shortPictureDotFile shortPictureGraphViz
+    dotToPng shortPictureDotFile shortPictureImgFile
+
+    putStrLn "Grafo visualización generado. Con ambos tipos de decorado, completo y abreviado.\n" 
     putStrLn $ "Revisar " ++ dotDir ++ " y " ++ imgDir ++ "\n"
 
     ----------------------------------------------------------------------
@@ -76,7 +86,7 @@ pipelineSetToGraph name set labeling = do
     ----------------------------------------------------------------------
     let decs = computeDecorations basicLabGraph
 
-    putStrLn "Decoraciones del grafo:\n"
+    putStrLn "Desarrollo de las decoraciones del grafo:\n"
     mapM_ (\(v, d) -> putStrLn $ "  " ++ show v ++ ": " ++ prettyHFS d)
         (assocs decs)
 
@@ -86,7 +96,7 @@ examplesList =
   [ ("liar"           , liarParadoxSystem , "q", liarParadoxLabeling)
   , ("dualLiar"       , dualLiarSystem , "p_", dualLiarLabeling)
   , ("yablo3"         , sysYablo3, "s1", labelingYablo3)
-  , ("closureIncScheme" , closureIncSchemeSystem, "inc", closureLabeling (Inclosure "omega" "x" "delta"))
+  , ("closureIncScheme" , closureIncSchemeSystem, "c", closureLabeling (Inclosure "omega" "x" "delta"))
   ]
 
 -- menú interactivo
@@ -104,11 +114,11 @@ interactiveMenu = do
     "q" -> putStrLn "Saliendo..."
     "a" -> mapM_ (\(n,s,r,l) -> pipelineSystemToSet n s r l) examplesList
     _   -> case readMaybe sel :: Maybe Int of
-             Just k | k >= 1 && k <= length examplesList -> do
-                       let (name,sys,root,label) = examplesList !! (k-1)
-                       pipelineSystemToSet name sys root label
-                       putStrLn "" >> interactiveMenu
-             _ -> putStrLn "Opción inválida.\n" >> interactiveMenu
+            Just k | k >= 1 && k <= length examplesList -> do
+                    let (name,sys,root,label) = examplesList !! (k-1)
+                    pipelineSystemToSet name sys root label
+                    putStrLn "" >> interactiveMenu
+            _ -> putStrLn "Opción inválida.\n" >> interactiveMenu
 
 -- reemplazo main para usar el menú interactivo
 main :: IO ()

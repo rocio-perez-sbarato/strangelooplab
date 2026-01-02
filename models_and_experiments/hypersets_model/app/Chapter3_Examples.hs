@@ -40,13 +40,13 @@ pipelineSetToGraph name set labeling = do
     let basicLabGraph = setToLabGraph set labeling
     let basicGraphViz = showLabGraphViz basicLabGraph
 
-    let basicDotFile = dotDir ++ "/" ++ name ++ "_basic.dot"
-    let basicImgFile = imgDir ++ "/" ++ name ++ "_basic.png"
+    let basicDotFile = dotDir ++ "/" ++ name ++ "_labels.dot"
+    let basicImgFile = imgDir ++ "/" ++ name ++ "_labels.png"
 
     writeFile basicDotFile basicGraphViz
     dotToPng basicDotFile basicImgFile
 
-    putStrLn "Grafo sin decoraciones generado.\n"
+    putStrLn "Grafo etiquetado simple generado.\n"
 
     ----------------------------------------------------------------------
     -- Picture de un conjunto 
@@ -54,13 +54,23 @@ pipelineSetToGraph name set labeling = do
     let pictureLabGraph = setToPicture set labeling
     let pictureGraphViz = showLabGraphViz pictureLabGraph
 
-    let pictureDotFile = dotDir ++ "/" ++ name ++ ".dot"
-    let pictureImgFile = imgDir ++ "/" ++ name ++ ".png"
+    let pictureDotFile = dotDir ++ "/" ++ name ++ "full_picture.dot"
+    let pictureImgFile = imgDir ++ "/" ++ name ++ "full_picture.png"
 
     writeFile pictureDotFile pictureGraphViz
     dotToPng pictureDotFile pictureImgFile
 
-    putStrLn "Grafo visualización generado.\n" 
+    let labeling = computeDecorationsShort basicLabGraph
+    let shortPictureLabGraph = setToLabGraph set (labeling !)
+    let shortPictureGraphViz = showLabGraphViz shortPictureLabGraph
+
+    let shortPictureDotFile = dotDir ++ "/" ++ name ++ "short_picture.dot"
+    let shortPictureImgFile = imgDir ++ "/" ++ name ++ "short_picture.png"
+
+    writeFile shortPictureDotFile shortPictureGraphViz
+    dotToPng shortPictureDotFile shortPictureImgFile
+
+    putStrLn "Grafo visualización generado. Con ambos tipos de decorado, completo y abreviado.\n" 
     putStrLn $ "Revisar " ++ dotDir ++ " y " ++ imgDir ++ "\n"
 
     ----------------------------------------------------------------------

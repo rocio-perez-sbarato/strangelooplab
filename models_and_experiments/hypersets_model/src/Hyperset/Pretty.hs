@@ -21,3 +21,9 @@ prettyHFS (U x) = case cast x of
     Nothing -> show x  
 prettyHFS (S []) = "{}"
 prettyHFS (S xs) = "{" ++ intercalate ", " (map prettyHFS xs) ++ "}"
+
+prettyVertex :: HFS String -> String
+prettyVertex (U x)   = x
+prettyVertex (S [])  = "{}"
+prettyVertex (S [U x]) = x 
+prettyVertex (S xs)  = "{" ++ intercalate ", " (map prettyVertex xs) ++ "}"

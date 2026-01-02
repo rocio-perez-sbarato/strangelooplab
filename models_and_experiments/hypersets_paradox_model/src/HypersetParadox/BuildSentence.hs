@@ -29,35 +29,33 @@ data Sentence = Sentence
 {- | Funciones auxiliares para generar nombres de variables
 adecuados a la sentencia. Notar la herencia en los nombres. 
 -}
-refE, refEq0, refq0, refq, ref0 :: Sentence -> String
-refE    (Sentence _ _ pred _)     = pred ++ "_"
-refEq0  (Sentence _ sub pred app) = pred ++ sub ++ app ++ "_"
-refq0   (Sentence _ sub _ app)    = sub ++ app ++ "_"
-refq    (Sentence _ sub _ _)      = sub ++ "_"
-ref0    (Sentence _ _ _ app)      = app ++ "_"
+refE, refEqq0, refQq0, refq0, refq, ref0 :: Sentence -> String
+refE    (Sentence _ _ pred _)      = pred ++ "_"
+refEqq0 (Sentence _ sub pred app)  = pred ++ sub ++ sub ++ app ++ "_"
+refQq0  (Sentence _ sub _ app)     = sub ++ sub ++ app ++ "_"
+refq0   (Sentence _ sub _ app)     = sub ++ app ++ "_"
+refq    (Sentence _ sub _ _)       = sub ++ "_"
+ref0    (Sentence _ _ _ app)       = app ++ "_"
 
 -- | Traduce una Sentence a un sistema de ecuaciones general
 sentenceToSystem :: Sentence -> System String
 sentenceToSystem s@(Sentence name sub pred app) =
     let eRef    = refE s
-        eq0Ref  = refEq0 s
+        eqq0Ref = refEqq0 s
+        qq0Ref  = refQq0 s
         q0Ref   = refq0 s
         qRef    = refq s
         zeroRef = ref0 s
     in
-    [ Equation name    (SetOf [Ref eRef, Ref eq0Ref])
-    , Equation eRef    (SetOf [Expr pred])
-    , Equation eq0Ref  (SetOf [Ref eRef, Ref q0Ref])
-    , Equation q0Ref   (SetOf [Ref qRef, Ref zeroRef])
-    , Equation qRef    (SetOf [Ref sub])
-    , Equation zeroRef (SetOf [Expr app])
+    [ Equation name     (SetOf [Ref eRef, Ref eqq0Ref])
+    , Equation eRef     (SetOf [Expr pred])
+    , Equation eqq0Ref  (SetOf [Ref eRef, Ref qq0Ref])
+    , Equation qq0Ref   (SetOf [Ref qRef, Ref q0Ref])    
+    , Equation q0Ref    (SetOf [Ref qRef, Ref zeroRef])
+    , Equation qRef     (SetOf [Ref sub])
+    , Equation zeroRef  (SetOf [Expr app])
     ]
 
-{- | Genera el Labeling a partir de una Sentence, incluyendo
-    tanto ecuaciones como expresiones.
-    El labeling generado es la función identidad del sistema de ecuaciones
-    asociado a Sentence.
--}
 -- | Genera un labeling para las expresiones de una Sentence.
 sentenceLabelingExpr :: Sentence -> Labeling String
 sentenceLabelingExpr (Sentence name sub pred app) = \ix ->
@@ -68,34 +66,49 @@ sentenceLabelingExpr (Sentence name sub pred app) = \ix ->
 
 -- | Genera un labeling para las ecuaciones de una Sentence.
 sentenceLabelingEq :: Sentence -> Labeling String
-sentenceLabelingEq (Sentence name sub pred app) = \ix ->
+sentenceLabelingEq s@(Sentence name sub pred app) = \ix ->
     case ix of
         0 -> S [U name]
-        1 -> S [S [U pred]]
-        2 -> unionHFS (S [S [U pred]]) (S [S [U sub, U app]])
-        3 -> S [unionHFS (S [U sub]) (S [U app])]
-        4 -> S [S [U sub]]
-        5 -> S [S [U app]]
+        1 -> S [U (refE s)]
+        2 -> S [U (refEqq0 s)]
+        3 -> S [U (refQq0 s)]
+        4 -> S [U (refq0 s)]
+        5 -> S [U (refq s)]
+        6 -> S [U (ref0 s)]
         _ -> S [U "???"]
 
+{- | Genera el Labeling a partir de una Sentence, incluyendo
+    tanto ecuaciones como expresiones.
+    El labeling generado es la función identidad del sistema de ecuaciones
+    asociado a Sentence.
+-}
 sentenceLabeling :: Sentence -> Labeling String
 sentenceLabeling s ix
-    | ix < 6 = sentenceLabelingEq s ix
-    | otherwise = sentenceLabelingExpr s (ix - 6) 
+    | ix < eqSize = sentenceLabelingEq s ix
+    | ix < eqSize + exprSize = sentenceLabelingExpr s (ix - eqSize)
+    | otherwise = S [U "???"]
+    where
+        eqSize   = 7
+        exprSize = 2
 
 {- | Crea un etiquetado combinado de dos sentencias.
     Se asume que cada una tiene 6 ecuaciones y 2 expresiones.
 --}
 labelingCombined :: Sentence -> Sentence -> Labeling String
 labelingCombined s1 s2 ix
-    | ix < eqSize = sentenceLabelingEq s1 ix
-    | ix < 2 * eqSize = sentenceLabelingEq s2 (ix - eqSize)
-    | ix < 2 * eqSize + exprSize = sentenceLabelingExpr s1 (ix - 2 * eqSize)
-    | ix < 2 * (eqSize + exprSize) = sentenceLabelingExpr s2 (ix - 2 * eqSize - exprSize)
-    | otherwise = S [U "???"]
+    | ix < eqSize =
+        sentenceLabelingEq s1 ix
+    | ix < 2 * eqSize =
+        sentenceLabelingEq s2 (ix - eqSize)
+    | ix < 2 * eqSize + exprSize =
+        sentenceLabelingExpr s1 (ix - 2 * eqSize)
+    | ix < 2 * (eqSize + exprSize) =
+        sentenceLabelingExpr s2 (ix - 2 * eqSize - exprSize)
+    | otherwise =
+        S [U "???"]
     where
-        eqSize = 6     
-        exprSize = 2  
+        eqSize   = 7
+        exprSize = 2
 
 -- | Permite construir el labeling de un sistema completo con múltiples sentencias.
 labelingCombinedList :: [(Int, Labeling String)] -> Labeling String

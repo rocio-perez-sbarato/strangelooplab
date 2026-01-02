@@ -74,7 +74,7 @@ barberParadox = Paradox "B" "E" "0"
 -- | Lista de paradojas disponibles
 knownParadoxes :: [Paradox]
 knownParadoxes =
-    [ liarParadox,
+    [   liarParadox,
         russellParadox,
         barberParadox
     ]

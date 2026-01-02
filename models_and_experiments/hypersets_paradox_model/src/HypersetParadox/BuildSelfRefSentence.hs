@@ -30,14 +30,16 @@ data Paradox = Paradox
 paradoxToSystem :: Paradox -> System String
 paradoxToSystem p@(Paradox sub pred app) =
     let eRef    = refE p
-        eq0Ref  = refEq0 p
+        eqq0Ref = refEqq0 p
+        qq0Ref  = refQq0 p
         q0Ref   = refq0 p
         qRef    = refq p
         zeroRef = ref0 p
     in
-    [ Equation sub    (SetOf [Ref eRef, Ref eq0Ref])
+    [ Equation sub    (SetOf [Ref eRef, Ref eqq0Ref])
     , Equation eRef    (SetOf [Expr pred])
-    , Equation eq0Ref  (SetOf [Ref eRef, Ref q0Ref])
+    , Equation eqq0Ref  (SetOf [Ref eRef, Ref qq0Ref])
+    , Equation qq0Ref  (SetOf [Ref sub, Ref q0Ref])    
     , Equation q0Ref   (SetOf [Ref qRef, Ref zeroRef])
     , Equation qRef    (SetOf [Ref sub])
     , Equation zeroRef (SetOf [Expr app])
@@ -48,24 +50,26 @@ paradoxToSystem p@(Paradox sub pred app) =
     asociado a Paradox
 -}
 paradoxLabeling :: Paradox -> Labeling String
-paradoxLabeling (Paradox sub pred app) = \ix ->
+paradoxLabeling p@(Paradox sub pred app) = \ix ->
     case ix of
         0 -> S [U sub]
-        1 -> S [S [U pred]]
-        2 -> S [unionHFS (S [S [U pred]]) (S [S [U sub, U app]])]
-        3 -> S [unionHFS (S [U sub]) (S [U app])]
-        4 -> S [S [U sub]]
-        5 -> S [S [U app]]
-        6 -> S [U pred]
-        7 -> S [U app]
+        1 -> S [U (refE p)]
+        2 -> S [U (refEqq0 p)]
+        3 -> S [U (refQq0 p)]
+        4 -> S [U (refq0 p)]
+        5 -> S [U (refq p)]
+        6 -> S [U (ref0 p)]
+        7 -> S [U pred]
+        8 -> S [U app]
         _ -> S [U "???"]
 
 {- | Funciones auxiliares para generar nombres de variables
 adecuados a la sentencia. Notar la herencia en los nombres. 
 -}
-refE, refEq0, refq0, refq, ref0 :: Paradox -> String
-refE    (Paradox _ pred _)     = pred ++ "_"
-refEq0  (Paradox sub pred app) = pred ++ sub ++ app ++ "_"
-refq0   (Paradox sub _ app)    = sub ++ app ++ "_"
-refq    (Paradox sub _ _)      = sub ++ "_"
-ref0    (Paradox _ _ app)      = app ++ "_"
+refE, refEqq0, refQq0, refq0, refq, ref0 :: Paradox -> String
+refE    (Paradox _ pred _)      = pred ++ "_"
+refEqq0 (Paradox sub pred app)  = pred ++ sub ++ sub ++ app ++ "_"
+refQq0  (Paradox sub _ app)     = sub ++ sub ++ app ++ "_"
+refq0   (Paradox sub _ app)     = sub ++ app ++ "_"
+refq    (Paradox sub _ _)       = sub ++ "_"
+ref0    (Paradox _ _ app)       = app ++ "_"
