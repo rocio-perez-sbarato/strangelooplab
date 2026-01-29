@@ -17,7 +17,6 @@ import Hyperset.Types
         System,
         RefHFS(RefS, RefU) ) 
 
-
 -- === Ejemplo mutualRef ===
 mutualRef :: System String
 mutualRef =
@@ -57,20 +56,18 @@ omegaLabeling2 _ = S [U "???"]
 -- === wellFounded ===
 wellFoundedSystem :: System String
 wellFoundedSystem =
-  [ Equation "A" (SetOf [Ref "X", Ref "C"])
-  , Equation "C" (SetOf [Ref "X"])
-  , Equation "X" (SetOf [Expr "B"])
+  [ Equation "A" (SetOf [Expr "C", Ref "B"])
+  , Equation "B" (SetOf [Expr "C"])
   ]
 
 wellFoundedSet :: RefHFS String 
-wellFoundedSet = RefS 0 [RefS 2 [RefU ("B",3)],RefS 1 [RefS 2 [RefU ("B",3)]]]
+wellFoundedSet = RefS 0 [RefU ("C",2),RefS 1 [RefU ("C",2)]]
 
 wellFoundedLabeling :: Labeling String
-wellFoundedLabeling 0 = S [U "X"]
-wellFoundedLabeling 1 = S [ ]
-wellFoundedLabeling 2 = S [U "X", U "Y"]
-wellFoundedLabeling 3 = S [U "Y"]
-wellFoundedLabeling _ = S [U "???"]
+wellFoundedLabeling 0 = S [U "X"] -- A
+wellFoundedLabeling 1 = S [ ]  -- B
+wellFoundedLabeling 2 = S [U "X", U "Y"] -- C 
+wellFoundedLabeling _ = S [U "???"] 
 
 -- === nonWellFounded ===
 nonWellFoundedSystem :: System String

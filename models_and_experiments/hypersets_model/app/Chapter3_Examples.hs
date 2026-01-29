@@ -54,8 +54,8 @@ pipelineSetToGraph name set labeling = do
     let pictureLabGraph = setToPicture set labeling
     let pictureGraphViz = showLabGraphViz pictureLabGraph
 
-    let pictureDotFile = dotDir ++ "/" ++ name ++ "full_picture.dot"
-    let pictureImgFile = imgDir ++ "/" ++ name ++ "full_picture.png"
+    let pictureDotFile = dotDir ++ "/" ++ name ++ "_full_picture.dot"
+    let pictureImgFile = imgDir ++ "/" ++ name ++ "_full_picture.png"
 
     writeFile pictureDotFile pictureGraphViz
     dotToPng pictureDotFile pictureImgFile
@@ -64,8 +64,8 @@ pipelineSetToGraph name set labeling = do
     let shortPictureLabGraph = setToLabGraph set (labeling !)
     let shortPictureGraphViz = showLabGraphViz shortPictureLabGraph
 
-    let shortPictureDotFile = dotDir ++ "/" ++ name ++ "short_picture.dot"
-    let shortPictureImgFile = imgDir ++ "/" ++ name ++ "short_picture.png"
+    let shortPictureDotFile = dotDir ++ "/" ++ name ++ "_short_picture.dot"
+    let shortPictureImgFile = imgDir ++ "/" ++ name ++ "_short_picture.png"
 
     writeFile shortPictureDotFile shortPictureGraphViz
     dotToPng shortPictureDotFile shortPictureImgFile
@@ -109,11 +109,11 @@ interactiveMenu = do
     "q" -> putStrLn "Saliendo..."
     "a" -> mapM_ (\(n,s,r,l) -> pipelineSystemToSet n s r l) examplesList
     _   -> case readMaybe sel :: Maybe Int of
-             Just k | k >= 1 && k <= length examplesList -> do
-                       let (name,sys,root,label) = examplesList !! (k-1)
-                       pipelineSystemToSet name sys root label
-                       putStrLn "" >> interactiveMenu
-             _ -> putStrLn "Opción inválida.\n" >> interactiveMenu
+            Just k | k >= 1 && k <= length examplesList -> do
+                      let (name,sys,root,label) = examplesList !! (k-1)
+                      pipelineSystemToSet name sys root label
+                      putStrLn "" >> interactiveMenu
+            _ -> putStrLn "Opción inválida.\n" >> interactiveMenu
 
 -- reemplazo main para usar el menú interactivo
 main :: IO ()
