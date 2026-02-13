@@ -11,19 +11,17 @@ En este repostitorio se encuentra el código de los modelos lógicos realizados 
 
 ### Contenido
 
-El código está dividido en tres librerías: **Hypersets**, la base de todo el trabajo; **HypersetsParadox**, una extensión para el modelado de paradojas; y **HypersetsIncScheme**, una modificación para el modelado del *Inclosure Scheme*.
+La carpeta `/models_and_experiments` contiene el código del Trabajo Especial. Este se encuentra dividido en tres librerías: **Hypersets**, la base de todo el trabajo; **HypersetsParadox**, una extensión para el modelado de paradojas; y **HypersetsIncScheme**, una modificación para el modelado del *Inclosure Scheme*.
 
 Cada librería tiene un `Main.hs` interactivo, el cual ingresa ejemplos pertinentes al pipeline de **Hypersets**. Estos ejemplos son los que están en el escrito y algunos extra. Se generan los archivos dot y los diagramas asociados.
 
-![Esquema](/images/general_utilities_types_functions.jpg)
+En `/trabajo_especial` pueden encontrar el Trabajo Especial de grado. Los capítulo 3, 4 y 5 actúan como explicación de la implementación. También, están disponibles las notas del trabajo especial que documentan la cronología del trabajo y del desarrollo de las librerías. 
 
-En `/trabajo_especial` pueden encontrar el Trabajo Especial de grado. Los capítulo 3, 4 y 5 actúan como explicación de la implementación. También, están disponibles las notas del trabajo especial que documentan la cronología del trabajo y del desarrollo de la librería. 
-
-En cuanto a la documentación del código, pueden generarla ejecutando el comando `cabal haddock` desde la raíz del repositorio. En `/trabajo_especial/diagrams` pueden encontrar los resultados de los experiemntos presentados en el Trabajo Especial.
+En cuanto a la documentación del código, pueden generarla ejecutando el comando `cabal haddock` desde la carpeta `/models_and_experiments`. En `/trabajo_especial/diagrams` pueden encontrar los resultados de los experiemntos presentados en el Trabajo Especial.
 
 ### Ejecución
 
-Desde la raíz del repositorio, ejecutar los siguientes comandos:
+Desde la carpeta `/models_and_experiments`, ejecutar los siguientes comandos:
 
 1. (importante) `cabal build all` 
 2. `cabal run hypersets`

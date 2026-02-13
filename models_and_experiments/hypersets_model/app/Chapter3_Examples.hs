@@ -90,8 +90,15 @@ examplesList :: [(String, System String, String, Labeling String)]
 examplesList =
   [ ("omega"           , omega            , "X", omegaLabeling)
   , ("omega2"          , omega2           , "X", omegaLabeling2)
+  , ("mutual_ref", mutualRef, "X", mutualRefLabeling)
   , ("well_founded"    , wellFoundedSystem, "A", wellFoundedLabeling)
+  , ("well_founded2"    , wellFounded2System, "X", wellFounded2Labeling)
   , ("non_well_founded", nonWellFoundedSystem, "X", nonWellFoundedLabeling)
+  , ("non_well_founded2", nonWellFounded2System, "X", nonWellFounded2Labeling)
+  , ("non_well_founded3", nonWellFounded3System, "A", nonWellFounded3Labeling)
+  , ("non_well_founded4", nonWellFounded4System, "Z", nonWellFounded4Labeling)
+  , ("non_well_founded5", nonWellFounded5System, "X", nonWellFounded5Labeling)
+  , ("pair_canonical", pairSystem, "q", pairLabeling)
   ]
 
 -- menú interactivo

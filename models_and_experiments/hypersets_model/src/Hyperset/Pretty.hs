@@ -22,8 +22,8 @@ prettyHFS (U x) = case cast x of
 prettyHFS (S []) = "{}"
 prettyHFS (S xs) = "{" ++ intercalate ", " (map prettyHFS xs) ++ "}"
 
-prettyVertex :: HFS String -> String
-prettyVertex (U x)   = x
-prettyVertex (S [])  = "{}"
-prettyVertex (S [U x]) = x 
-prettyVertex (S xs)  = "{" ++ intercalate ", " (map prettyVertex xs) ++ "}"
+getName :: HFS String -> String
+getName (U x)   = x
+getName (S [])  = "{}"
+getName (S [U x]) = x 
+getName (S xs)  = "{" ++ intercalate ", " (map getName xs) ++ "}"
