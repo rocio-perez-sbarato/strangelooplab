@@ -1,7 +1,7 @@
 {-|
-Module      : Hyperset.Types
-Description : Módulo que contiene operaciones básica de conjuntos.
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Module      : Hyperset.Operations
+Description : Módulo que contiene operaciones básicas de conjuntos
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental
@@ -9,7 +9,7 @@ Portability : portable
 -}
 
 module Hyperset.Operations where
-import Hyperset.Types 
+import Hyperset.Types ( HFS(..), RefHFS(..) ) 
 
 
 {- | Unión de conjuntos

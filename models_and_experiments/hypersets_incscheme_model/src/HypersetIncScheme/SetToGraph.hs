@@ -1,20 +1,36 @@
+{- |
+Module      : HypersetIncScheme.SetToGraph
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetIncScheme.SetToGraph where
 
 import HypersetIncScheme.Types
+    ( RefHFScheme(..),
+      Vertex,
+      Label,
+      Value(..),
+      Graph,
+      LabGraph(..),
+      Name )
 import Data.Array ( assocs, bounds, listArray )
 import Data.List ( nub ) 
 
--- Devuelve todos los vértices
+-- | Devuelve todos los vértices
 allVertices :: RefHFScheme t -> [Vertex]
 allVertices (RefU (_, v))     = [v]
 allVertices (RefS _ v children) = v : concatMap allVertices children
 allVertices (Application name v lst) = [to | (_, to, _) <- lst]  -- solo destinos
 
--- Cuenta la cantidad de vértices 
+-- | Cuenta la cantidad de vértices 
 countVertices :: RefHFScheme t -> Int
 countVertices refhfs = length . nub $ allVertices refhfs
 
--- Busca el nodo asociado a un vértice
+-- | Busca el nodo asociado a un vértice
 getVertexById :: RefHFScheme t -> Vertex -> RefHFScheme t
 getVertexById node@(RefU (_, v)) target
   | v == target = node
@@ -30,7 +46,7 @@ getVertexById node@(RefS _ v children) target
     searchChildren (c:cs) =
       if target `elem` allVertices c then getVertexById c target else searchChildren cs
 
--- Obtiene la etiqueta de un vértice
+-- | Obtiene la etiqueta de un vértice
 getNodeLabelById :: RefHFScheme Label -> Vertex -> Label
 getNodeLabelById node@(RefU (l, v)) target
   | v == target = l
@@ -43,18 +59,18 @@ getNodeLabelById node@(RefS l v children) target
     searchChildren (c:cs) =
       if target `elem` allVertices c then getNodeLabelById c target else searchChildren cs
 
--- Construye la etiqueta de una arista
+-- | Construye la etiqueta de una arista
 edgeLabel :: Name -> String -> Value -> String
 edgeLabel name lbl v =
   name ++ "(" ++ lbl ++ ")" ++ membershipSymbol v
 
--- Símbolo según el valor lógico
+-- | Símbolo según el valor lógico
 membershipSymbol :: Value -> String
 membershipSymbol V1 = "in"
 membershipSymbol V0 = "not-in"
 membershipSymbol V2 = "in!"
 
--- Devuelve las aristas salientes de un vértice
+-- | Devuelve las aristas salientes de un vértice
 getChildren :: RefHFScheme Label -> Vertex -> [(Maybe Label, Vertex)]
 getChildren (RefU (_, _)) _ = []
 getChildren (Application name v lst) _ = [(Just (name ++ "(" ++ lbl ++ ")"), to) | (lbl, to, _) <- lst]

@@ -1,17 +1,37 @@
+{- |
+Module      : HypersetParadox.BuildReferenceChain
+Description : Generalización sintáctica de cadenas referenciales mediante el tipo Sentence
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetParadox.BuildReferenceChain where 
 
-import HypersetParadox.BuildSentence 
+import HypersetParadox.BuildSentence
+    ( Sentence(Sentence),
+        refE,
+        refEqq0,
+        refQq0,
+        refq0,
+        refq,
+        ref0,
+        sentenceLabelingExpr,
+        labelingCombinedList ) 
 import Hyperset.Types
-import Hyperset.Operations
+    ( System, SetExpr(..), Equation(Equation), Labeling, HFS(..) )
+import Hyperset.Operations ()
 import Data.Char (isDigit) 
 
 -- ** Paradoja de Yablo
 
--- | Construcción de la sentencia i de la paradoja de Yablo con profundidad n 
+-- | Construcción de la sentencia i de la paradoja de Yablo con profundidad n.
 sentenceYablo :: Int -> Int -> Sentence
 sentenceYablo i n = Sentence (sentenceName i) (sentenceNamesRange i n) ("E" ++ show i) ("0" ++ show i)
 
--- | Añade el índice de la sentencia de la paradoja de Yablo
+-- | Añade el índice de la sentencia de la paradoja de Yablo.
 sentenceName :: Int -> String
 sentenceName i = "s" ++ show i
 
@@ -83,7 +103,7 @@ yabloToSystem s@(Sentence name sub pred app) =
     in
     [ Equation name    (SetOf [Ref eRef, Ref eqq0Ref])
     , Equation eRef    (SetOf [Expr pred])
-    , Equation eqq0Ref (SetOf [Ref eRef, Ref qq0Ref])
+    , Equation eqq0Ref (SetOf [Expr pred, Ref qq0Ref])
     , Equation qq0Ref  (SetOf [Ref qRef, Ref q0Ref])
     , Equation q0Ref   (SetOf [Ref qRef, Ref zeroRef])
     , Equation qRef    (SetOf (buildRefsList name sub))
@@ -97,23 +117,23 @@ Notar la herencia en las etiquetas.
 yabloLabelingEq :: Int -> Sentence -> Labeling String
 yabloLabelingEq i s@(Sentence name sub pred app) = \ix ->
     case ix of
-        0 -> S [U name]
-        1 -> S [U (refE s)]
-        2 -> S [U (pred ++ (buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")]
-        3 -> S [U ((buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")]
-        4 -> S [U ((buildSimpleLabel name sub) ++ app ++ "_")]
-        5 -> S [U (buildRefsName name sub ++ "_")]
-        6 -> S [U (ref0 s)]
-        _ -> S[ U "???"]
+        0 -> U name
+        1 -> U (refE s)
+        2 -> U (pred ++ (buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")
+        3 -> U ((buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")
+        4 -> U ((buildSimpleLabel name sub) ++ app ++ "_")
+        5 -> U (buildRefsName name sub ++ "_")
+        6 -> U (ref0 s)
+        _ ->  U "???"
 
 {- | Creación del labeling para las expresiones de la sentencia i de la paradoja de Yablo con profundidad n. -}
 yabloLabelingExpr :: Sentence -> Labeling String 
 yabloLabelingExpr (Sentence name sub pred app) = \ix ->
     case ix of
-        0 -> S [U pred]
-        1 -> S [U ("s" ++ show (getLastNumber sub))]
-        2 -> S [U app]
-        _ -> S [U "???"]
+        0 -> U pred
+        1 -> U ("s" ++ show (getLastNumber sub))
+        2 -> U app
+        _ -> U "???"
 
 -- | Etiquetado combinado para la sentencia i de la paradoja de Yablo con profundidad n.
 yabloLabeling :: Sentence -> Labeling String
@@ -123,7 +143,7 @@ yabloLabeling s@(Sentence name _ _ _) ix
     | ix < eqSize + exprSize =
         yabloLabelingExpr s (ix - eqSize)
     | otherwise =
-        S [U "???"]
+        U "???"
     where
         eqSize   = 7
         exprSize = 3   

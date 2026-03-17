@@ -93,7 +93,7 @@ pipelineSetToGraph name set labeling = do
 -- lista de ejemplos disponibles
 examplesList :: [(String, System String, String, Labeling String)]
 examplesList =
-  [ ("liar"           , liarParadoxSystem , "q", liarParadoxLabeling)
+  [ ("liar"           , liarSystem , "q", liarLabeling)
   , ("dualLiar"       , dualLiarSystem , "p_", dualLiarLabeling)
   , ("yablo3"         , sysYablo3, "s1", labelingYablo3)
   , ("closureIncScheme" , closureIncSchemeSystem, "c", closureLabeling (Inclosure "omega" "x" "delta"))

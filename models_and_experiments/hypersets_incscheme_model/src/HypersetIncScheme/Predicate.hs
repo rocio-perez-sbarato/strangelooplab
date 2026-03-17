@@ -1,8 +1,26 @@
+{- |
+Module      : HypersetIncScheme.Predicate
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
+
 module HypersetIncScheme.Predicate where
 import HypersetIncScheme.Types
-import HypersetIncScheme.Vertex
-import Hyperset.Vertex
-import Data.List
+    ( RefHFScheme(Application),
+      Vertex,
+      Value(..),
+      Name,
+      System,
+      SetExpr(Ref),
+      FunApp(Elem, Not),
+      Statement(Function) )
+import HypersetIncScheme.Vertex ()
+import Hyperset.Vertex ( lookupList )
+import Data.List ( nub )
 
 -- | Construye un diccionario de funciones a partir del sistema.
 --   El resultado asocia cada nombre de función con su aplicación lógica.

@@ -1,7 +1,7 @@
 {- |
-Module      : Hyperset.Paradox
+Module      : HypersetParadox.BuildSelfRefSentence
 Description : Generalización sintáctica de paradojas autorreferenciales mediante el tipo RefHFS
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental
@@ -18,7 +18,7 @@ import Hyperset.Operations ( unionHFS )
 {- | Representación abstracta de una paradoja autorreferencial,
 como un par ordenado del tipo <predicate, subject, applicability>
 -}
-data Paradox = Paradox
+data SelfRefSentence = SelfRefSentence
     {   subject :: String,
         predicate :: String,
         applicability :: String
@@ -26,9 +26,9 @@ data Paradox = Paradox
 
 -- * Generalización de paradojas autorreferenciales
 
--- | Traduce una Paradox a un sistema de ecuaciones general
-paradoxToSystem :: Paradox -> System String
-paradoxToSystem p@(Paradox sub pred app) =
+-- | Traduce una SelfRefSentence a un sistema de ecuaciones general
+selfRefSentenceToSystem :: SelfRefSentence -> System String
+selfRefSentenceToSystem p@(SelfRefSentence sub pred app) =
     let eRef    = refE p
         eqq0Ref = refEqq0 p
         qq0Ref  = refQq0 p
@@ -38,38 +38,38 @@ paradoxToSystem p@(Paradox sub pred app) =
     in
     [ Equation sub    (SetOf [Ref eRef, Ref eqq0Ref])
     , Equation eRef    (SetOf [Expr pred])
-    , Equation eqq0Ref  (SetOf [Ref eRef, Ref qq0Ref])
-    , Equation qq0Ref  (SetOf [Ref sub, Ref q0Ref])    
-    , Equation q0Ref   (SetOf [Ref qRef, Ref zeroRef])
+    , Equation eqq0Ref  (SetOf [Expr pred, Ref qq0Ref])
+    , Equation qq0Ref  (SetOf [Ref qRef, Ref q0Ref])    
+    , Equation q0Ref   (SetOf [Ref sub, Ref zeroRef])
     , Equation qRef    (SetOf [Ref sub])
     , Equation zeroRef (SetOf [Expr app])
     ]
 
-{- | Genera el Labeling a partir de una Paradox. 
+{- | Genera el Labeling a partir de una SelfRefSentence. 
     El labeling generado es la función identidad del sistema de ecuaciones
-    asociado a Paradox
+    asociado a SelfRefSentence
 -}
-paradoxLabeling :: Paradox -> Labeling String
-paradoxLabeling p@(Paradox sub pred app) = \ix ->
+selfRefSentenceLabeling :: SelfRefSentence -> Labeling String
+selfRefSentenceLabeling p@(SelfRefSentence sub pred app) = \ix ->
     case ix of
-        0 -> S [U sub]
-        1 -> S [U (refE p)]
-        2 -> S [U (refEqq0 p)]
-        3 -> S [U (refQq0 p)]
-        4 -> S [U (refq0 p)]
-        5 -> S [U (refq p)]
-        6 -> S [U (ref0 p)]
-        7 -> S [U pred]
-        8 -> S [U app]
-        _ -> S [U "???"]
+        0 -> U sub
+        1 -> U (refE p)
+        2 -> U (refEqq0 p)
+        3 -> U (refQq0 p)
+        4 -> U (refq0 p)
+        5 -> U (refq p)
+        6 -> U (ref0 p)
+        7 -> U pred
+        8 -> U app
+        _ -> U "???"
 
 {- | Funciones auxiliares para generar nombres de variables
 adecuados a la sentencia. Notar la herencia en los nombres. 
 -}
-refE, refEqq0, refQq0, refq0, refq, ref0 :: Paradox -> String
-refE    (Paradox _ pred _)      = pred ++ "_"
-refEqq0 (Paradox sub pred app)  = pred ++ sub ++ sub ++ app ++ "_"
-refQq0  (Paradox sub _ app)     = sub ++ sub ++ app ++ "_"
-refq0   (Paradox sub _ app)     = sub ++ app ++ "_"
-refq    (Paradox sub _ _)       = sub ++ "_"
-ref0    (Paradox _ _ app)       = app ++ "_"
+refE, refEqq0, refQq0, refq0, refq, ref0 :: SelfRefSentence -> String
+refE    (SelfRefSentence _ pred _)      = pred ++ "_"
+refEqq0 (SelfRefSentence sub pred app)  = pred ++ sub ++ sub ++ app 
+refQq0  (SelfRefSentence sub _ app)     = sub ++ sub ++ app 
+refq0   (SelfRefSentence sub _ app)     = sub ++ app 
+refq    (SelfRefSentence sub _ _)       = sub ++ "_"
+ref0    (SelfRefSentence _ _ app)       = app ++ "_"

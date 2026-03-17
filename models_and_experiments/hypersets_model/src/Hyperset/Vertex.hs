@@ -1,6 +1,21 @@
+{-|
+Module      : Hyperset.Vertex
+Description : Tipos principales para representar sistemas de ecuaciones, conjuntos y grafos en ZFA
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module Hyperset.Vertex where 
 
 import Hyperset.Types
+    ( System,
+    SetExpr(SetOf, Expr, Ref),
+    Equation(Equation),
+    Vertex,
+    RefHFS(..) )
 import qualified Data.Set as Set
 
 -- | Elimina duplicados conservando orden
@@ -11,18 +26,18 @@ uniq (x:xs)
     | otherwise   = x : uniq xs
 
 {- | Cuenta los vértices únicos en el RefHFS
-      Contempla ciclos y referencias entre vértices
-      Evita repeticiones usando un Set
+        Contempla ciclos y referencias entre vértices
+        Evita repeticiones usando un Set
 -}
 countVertices :: RefHFS t -> Int
 countVertices refhfs = Set.size (collectVertices refhfs Set.empty)
-  where
-    collectVertices (RefU (_, v)) seen
-      | v `Set.member` seen = seen
-      | otherwise           = Set.insert v seen
-    collectVertices (RefS v children) seen
-      | v `Set.member` seen = seen
-      | otherwise           = foldr collectVertices (Set.insert v seen) children
+    where
+        collectVertices (RefU (_, v)) seen
+            | v `Set.member` seen = seen
+            | otherwise           = Set.insert v seen
+        collectVertices (RefS v children) seen
+            | v `Set.member` seen = seen
+            | otherwise           = foldr collectVertices (Set.insert v seen) children
 
 -- =======================================
 -- | Construye mapping de variables a vértices

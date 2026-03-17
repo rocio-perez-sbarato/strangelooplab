@@ -17,7 +17,6 @@ library
     , Hyperset.DenoteSystem
     , Hyperset.DotExport
     , Hyperset.Examples
-    , Hyperset.GraphBuilder
     , Hyperset.SetToGraph
     , Hyperset.Types
     , Hyperset.Pretty

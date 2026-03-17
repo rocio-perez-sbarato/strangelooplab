@@ -1,6 +1,15 @@
+{- |
+Module      : HypersetIncScheme.ToDot
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetIncScheme.ToDot where 
-import HypersetIncScheme.Types
-import Data.Array 
+import HypersetIncScheme.Types ( LabGraph(..) )
+import Data.Array ( assocs, indices ) 
 
 -- | DOT export para LabGraph con Maybe Label en aristas
 showLabGraphViz :: (Show n, Show e) => LabGraph n e -> String

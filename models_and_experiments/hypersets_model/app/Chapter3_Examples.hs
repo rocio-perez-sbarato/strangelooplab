@@ -93,7 +93,7 @@ examplesList =
   , ("mutual_ref", mutualRef, "X", mutualRefLabeling)
   , ("well_founded"    , wellFoundedSystem, "A", wellFoundedLabeling)
   , ("well_founded2"    , wellFounded2System, "X", wellFounded2Labeling)
-  , ("non_well_founded", nonWellFoundedSystem, "X", nonWellFoundedLabeling)
+  , ("non_well_founded", nonWellFoundedSystem, "X", canonicalNonWellFoundedLabeling)
   , ("non_well_founded2", nonWellFounded2System, "X", nonWellFounded2Labeling)
   , ("non_well_founded3", nonWellFounded3System, "A", nonWellFounded3Labeling)
   , ("non_well_founded4", nonWellFounded4System, "Z", nonWellFounded4Labeling)

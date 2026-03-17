@@ -1,6 +1,22 @@
+{- |
+Module      : HypersetParadox.BuildFunctionApplication
+Description : Generalización sintáctica de la propiedad de Clausura generada por el operador delta
+                en el Inclosure Scheme
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetParadox.BuildFunctionApplication where 
 
-import Hyperset.Types 
+import Hyperset.Types
+    ( System,
+        SetExpr(Expr, Ref, SetOf),
+        Equation(Equation),
+        Labeling,
+        HFS(U, S) ) 
 
 -- *************************************
 -- | Inclosure Scheme
@@ -13,7 +29,7 @@ data Inclosure t = Inclosure
 
 -- * Generalización de paradojas autorreferenciales
 
--- | Traduce una Paradox a un sistema de ecuaciones general
+-- | Traduce una SelfRefSentence a un sistema de ecuaciones general
 closureToSystem :: Inclosure String -> System String
 closureToSystem i@(Inclosure omega x delta) =
     let dRef    = refD i 
@@ -36,9 +52,9 @@ closureToSystem i@(Inclosure omega x delta) =
     , Equation zeroRef   (SetOf [Expr "0"])
     ]
 
-{- | Genera el Labeling a partir de una Paradox. 
+{- | Genera el Labeling a partir de una SelfRefSentence. 
     El labeling generado es la función identidad del sistema de ecuaciones
-    asociado a Paradox
+    asociado a SelfRefSentence
 -}
 closureLabeling :: Inclosure String -> Labeling String
 closureLabeling i@(Inclosure omega x delta) = \ix ->

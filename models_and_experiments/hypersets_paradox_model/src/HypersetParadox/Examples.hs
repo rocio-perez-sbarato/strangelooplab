@@ -1,10 +1,25 @@
+{- |
+Module      : HypersetParadox.Examples
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetParadox.Examples where 
 
 import HypersetParadox.BuildSelfRefSentence
+    ( SelfRefSentence(SelfRefSentence),
+        selfRefSentenceToSystem,
+        selfRefSentenceLabeling )
 import HypersetParadox.BuildSentence
+    ( Sentence(Sentence), labelingCombined, sentenceToSystem )
 import HypersetParadox.BuildReferenceChain
-import Hyperset.Types
+    ( sentenceYablo, yabloFamilySystem, yabloFamilyLabeling )
+import Hyperset.Types ( System, Labeling ) 
 import HypersetParadox.BuildFunctionApplication
+    ( Inclosure(Inclosure), closureToSystem ) 
 
 -- * Aplicación de predicados
 
@@ -15,7 +30,7 @@ closureIncSchemeSystem = closureToSystem (Inclosure "omega" "x" "delta")
 
 -- ** Paradoja del mentiroso dual
 
-{- | El mentiroso dual. 
+{-  El mentiroso dual. 
     q = "p", Q = "Es verdadera", 0 = False
     p = "q", P = "Es verdadera", 1 = True
 -}
@@ -47,35 +62,28 @@ labelingYablo3 = yabloFamilyLabeling 3
 
 -- * Paradojas autorreferenciales
 
-{- | El mentiroso. 
+{-  El mentiroso. 
     q = "Esta oración", E = "Es verdadera", 0 = False
 -}
-liarParadox :: Paradox
-liarParadox = Paradox "q" "E" "0"
+liar :: SelfRefSentence
+liar = SelfRefSentence "q" "E" "0"
 
-liarParadoxSystem :: System String 
-liarParadoxSystem = paradoxToSystem liarParadox
+liarSystem :: System String 
+liarSystem = selfRefSentenceToSystem liar
 
-liarParadoxLabeling :: Labeling String 
-liarParadoxLabeling = paradoxLabeling liarParadox
+liarLabeling :: Labeling String 
+liarLabeling = selfRefSentenceLabeling liar
 
-{- | La paradoja de Russell
+{- La paradoja de Russell
     R = "El conjunto de Russell", E = "Pertenece a sí mismo", 0 = False
 -}
-russellParadox :: Paradox
-russellParadox = Paradox "R" "E" "0"
+russell :: SelfRefSentence
+russell = SelfRefSentence "R" "E" "0"
 
-{- | Ejemplo: El barbero
+{- Ejemplo: El barbero
     B = "El barbero", E = "Se afeita a sí mismo", 0 = False
 -}
-barberParadox :: Paradox
-barberParadox = Paradox "B" "E" "0"
+barber :: SelfRefSentence
+barber = SelfRefSentence "B" "E" "0"
 
--- | Lista de paradojas disponibles
-knownParadoxes :: [Paradox]
-knownParadoxes =
-    [   liarParadox,
-        russellParadox,
-        barberParadox
-    ]
 

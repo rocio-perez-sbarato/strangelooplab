@@ -1,3 +1,13 @@
+{-|
+Module      : Hyperset.DotToImage
+Description : Pasaje de dot a imagen
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module Hyperset.DotToImage where 
     
 import System.Process (callProcess)

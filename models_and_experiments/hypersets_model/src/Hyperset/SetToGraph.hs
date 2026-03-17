@@ -1,8 +1,8 @@
 {-|
-Module      : Hyperset.Types
+Module      : Hyperset.SetToGraph
 Description : Módulo que realiza el pasaje del tipo de datos HFS al tipo de datos LabGraph,
               respetando la herencia propuesta por HFS
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental

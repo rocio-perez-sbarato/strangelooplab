@@ -1,7 +1,7 @@
 {-|
-Module      : Hyperset.Types
+Module      : Hyperset.DotExport
 Description : Exportación de Graph y LabGraph a archivo .dot
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental
@@ -14,7 +14,7 @@ import Data.Typeable (Typeable)
 import Hyperset.Types ( LabGraph(..) )
 import Hyperset.Pretty ( prettyHFS )
 
--- | DOT export 
+-- | DOT export plano
 showGraphViz :: (Show a, Typeable a) => LabGraph a -> String
 showGraphViz (LabGraph gr label) =
   "digraph G {\n" ++
@@ -24,7 +24,7 @@ showGraphViz (LabGraph gr label) =
     showEdges (v, ws) =
       concat [ "  " ++ show v ++ " -> " ++ show w ++ ";\n" | w <- ws ]
 
--- | DOT export con label 
+-- | DOT export con labels 
 showLabGraphViz :: (Show a, Typeable a) => LabGraph a -> String
 showLabGraphViz (LabGraph gr label) =
   "digraph G {\n" ++

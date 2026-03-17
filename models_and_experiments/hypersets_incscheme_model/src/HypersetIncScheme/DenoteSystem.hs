@@ -1,13 +1,31 @@
+{- |
+Module      : HypersetIncScheme.DenoteSystem
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetIncScheme.DenoteSystem where
 import HypersetIncScheme.Predicate
-import HypersetIncScheme.Vertex
+    ( buildFunctionDict, expandSetApp )
+import HypersetIncScheme.Vertex ( buildVertexMap )
 import Hyperset.Vertex (lookupList)
-import HypersetIncScheme.Equation
+import HypersetIncScheme.Equation ( buildDict )
 import HypersetIncScheme.Types
-import Data.List
+    ( RefHFScheme(..),
+      Vertex,
+      Value(V2),
+      Name,
+      System,
+      SetExpr(..),
+      FunApp(SetApp),
+      Variable )
+import Data.List ()
 
 -- =======================================
--- | Conversión general a RefHFScheme
+-- | Conversión general de sistema a RefHFScheme
 -- =======================================
 denoteSystem :: System String -> String -> RefHFScheme String
 denoteSystem system rootVar =
@@ -17,9 +35,6 @@ denoteSystem system rootVar =
         v      = lookupList rootVar vmap
     in convertExprGeneral vmap dict axdict [] [] 0 (rootVar, v) (Ref rootVar)
 
--- =======================================
--- Conversión general de SetExpr a RefHFScheme
--- =======================================
 convertExprGeneral
   :: [(String, Vertex)]                 -- vmap
   -> [(Variable, SetExpr String)]       -- dict

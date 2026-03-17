@@ -1,7 +1,7 @@
 {-|
-Module      : Hyperset.Types
-Description : Pasaje del tipo de datos System al tipo de datos HFS con una variable raíz.
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Module      : Hyperset.DenoteSystem
+Description : Pasaje del tipo de datos System al tipo de datos HFS con una variable raíz
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental
@@ -10,10 +10,11 @@ Portability : portable
 
 module Hyperset.DenoteSystem where 
 import Hyperset.Types
-import Hyperset.Operations
-import Hyperset.Vertex
-import Hyperset.Equation
-import System.IO.Unsafe 
+    ( System, SetExpr(..), Vertex, HFS, RefHFS(..), Label, Variable )
+import Hyperset.Operations ( justHereditary )
+import Hyperset.Vertex ( buildVertexMap, lookupList )
+import Hyperset.Equation ( buildDict )
+import System.IO.Unsafe () 
 
 systemToHFS :: System String -> String -> HFS String
 systemToHFS system rootVar = justHereditary (denoteSystem system rootVar)
@@ -26,10 +27,10 @@ denoteSystem system rootVar =
       v = lookupList rootVar vmap
   in convertExpr vmap dict [] [] 0 (rootVar, v) id
 
--- Nuevo convertExpr con contador de Exprs
+-- | Los átomos se transforman en RefU, los conjuntos se transforman en RefS
 convertExpr
   :: [(String, Vertex)]            -- Mapa de variables a vértices
-  -> [(Variable, SetExpr String)] -- Diccionario variable -> expresión
+  -> [(Variable, SetExpr String)]  -- Diccionario variable -> expresión
   -> [Variable]                    -- Variables visitadas
   -> [Variable]                    -- Variables expandidas
   -> Int                           -- Contador de Expr

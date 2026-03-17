@@ -1,7 +1,7 @@
 {-|
 Module      : Hyperset.Examples
-Description : Ejemplos de sistemas de ecuaciones y labelings que representan semánticamente una paradoja
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Description : Ejemplos de sistemas de ecuaciones, labelings y sus conjuntos solución
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental

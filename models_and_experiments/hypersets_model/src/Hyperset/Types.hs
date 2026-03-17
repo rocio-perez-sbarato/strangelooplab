@@ -1,7 +1,7 @@
 {-|
 Module      : Hyperset.Types
 Description : Tipos principales para representar sistemas de ecuaciones, conjuntos y grafos en ZFA
-Copyright   : (c) Rocío Perez Sbarato, 2025
+Copyright   : (c) Rocío Perez Sbarato, 2026
 License     : MIT
 Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
 Stability   : experimental
@@ -34,7 +34,6 @@ data HFS t = S [HFS t] | U t
 
 {- | Tipos Graph y LabGraph. Notar que Labeling es
 de cada vértice es un conjunto HFS.-}
-
 type Graph = Array Vertex [Vertex]
 type Edge = (Vertex, Vertex)
 type Bounds = (Vertex, Vertex)

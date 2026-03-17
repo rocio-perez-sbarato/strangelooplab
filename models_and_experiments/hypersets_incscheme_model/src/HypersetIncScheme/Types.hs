@@ -1,6 +1,15 @@
+{- |
+Module      : HypersetIncScheme.Types
+Copyright   : (c) Rocío Perez Sbarato, 2026
+License     : MIT
+Maintainer  : rocio.perez.sbarato@mi.unc.edu.ar
+Stability   : experimental
+Portability : portable
+-}
+
 module HypersetIncScheme.Types where
 
-import Data.Array 
+import Data.Array ( Array, indices ) 
 
 -- | Sinónimos de tipo básicos 
 type Variable = String
