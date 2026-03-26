@@ -7,7 +7,6 @@ import Hyperset.Pretty
 import Hyperset.DotExport
 import Hyperset.Examples 
 import Hyperset.DotToImage
-import Hyperset.SetToPicture
 import Data.Array
 import System.IO (hFlush, stdout)         
 import Text.Read (readMaybe)               
@@ -46,36 +45,12 @@ pipelineSetToGraph name set labeling = do
     writeFile basicDotFile basicGraphViz
     dotToPng basicDotFile basicImgFile
 
-    putStrLn "Grafo etiquetado simple generado.\n"
-
-    ----------------------------------------------------------------------
-    -- Picture de un conjunto 
-    ----------------------------------------------------------------------
-    let pictureLabGraph = setToPicture set labeling
-    let pictureGraphViz = showLabGraphViz pictureLabGraph
-
-    let pictureDotFile = dotDir ++ "/" ++ name ++ "_full_picture.dot"
-    let pictureImgFile = imgDir ++ "/" ++ name ++ "_full_picture.png"
-
-    writeFile pictureDotFile pictureGraphViz
-    dotToPng pictureDotFile pictureImgFile
-
-    let labeling = computeDecorationsShort basicLabGraph
-    let shortPictureLabGraph = setToLabGraph set (labeling !)
-    let shortPictureGraphViz = showLabGraphViz shortPictureLabGraph
-
-    let shortPictureDotFile = dotDir ++ "/" ++ name ++ "_short_picture.dot"
-    let shortPictureImgFile = imgDir ++ "/" ++ name ++ "_short_picture.png"
-
-    writeFile shortPictureDotFile shortPictureGraphViz
-    dotToPng shortPictureDotFile shortPictureImgFile
-
-    putStrLn "Grafo visualización generado. Con ambos tipos de decorado, completo y abreviado.\n" 
-    putStrLn $ "Revisar " ++ dotDir ++ " y " ++ imgDir ++ "\n"
+    putStrLn "Visualización simple generada.\n"
 
     ----------------------------------------------------------------------
     -- Impresión de decoraciones
     ----------------------------------------------------------------------
+    -- Cambiar por computeDecorationsShort si quiere mayor legilibilidad
     let decs = computeDecorations basicLabGraph
 
     putStrLn "Decoraciones del grafo:\n"
@@ -93,7 +68,7 @@ examplesList =
   , ("mutual_ref", mutualRef, "X", mutualRefLabeling)
   , ("well_founded"    , wellFoundedSystem, "A", wellFoundedLabeling)
   , ("well_founded2"    , wellFounded2System, "X", wellFounded2Labeling)
-  , ("non_well_founded", nonWellFoundedSystem, "X", canonicalNonWellFoundedLabeling)
+  , ("non_well_founded", nonWellFoundedSystem, "X", nonWellFoundedLabeling)
   , ("non_well_founded2", nonWellFounded2System, "X", nonWellFounded2Labeling)
   , ("non_well_founded3", nonWellFounded3System, "A", nonWellFounded3Labeling)
   , ("non_well_founded4", nonWellFounded4System, "Z", nonWellFounded4Labeling)

@@ -119,10 +119,10 @@ yabloLabelingEq i s@(Sentence name sub pred app) = \ix ->
     case ix of
         0 -> U name
         1 -> U (refE s)
-        2 -> U (pred ++ (buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")
-        3 -> U ((buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app ++ "_")
-        4 -> U ((buildSimpleLabel name sub) ++ app ++ "_")
-        5 -> U (buildRefsName name sub ++ "_")
+        2 -> U (pred ++ (buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app)
+        3 -> U ((buildSimpleLabel name sub) ++ (buildSimpleLabel name sub) ++ app)
+        4 -> U ((buildSimpleLabel name sub) ++ app)
+        5 -> U (buildRefsName name sub)
         6 -> U (ref0 s)
         _ ->  U "???"
 

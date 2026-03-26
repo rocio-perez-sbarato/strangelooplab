@@ -2,7 +2,6 @@ import System.Directory (createDirectoryIfMissing)
 import Hyperset.Types 
 import Hyperset.Decorator
 import Hyperset.SetToGraph
-import Hyperset.SetToPicture
 import Hyperset.DotToImage
 import Hyperset.DenoteSystem
 import Hyperset.Examples 
@@ -54,36 +53,12 @@ pipelineSetToGraph name set labeling = do
     writeFile basicDotFile basicGraphViz
     dotToPng basicDotFile basicImgFile
 
-    putStrLn "Grafo etiquetado simple generado.\n"
-
-    ----------------------------------------------------------------------
-    -- Picture de un conjunto 
-    ----------------------------------------------------------------------
-    let pictureLabGraph = setToPicture set labeling
-    let pictureGraphViz = showLabGraphViz pictureLabGraph
-
-    let pictureDotFile = dotDir ++ "/" ++ name ++ "_full_picture.dot"
-    let pictureImgFile = imgDir ++ "/" ++ name ++ "_full_picture.png"
-
-    writeFile pictureDotFile pictureGraphViz
-    dotToPng pictureDotFile pictureImgFile
-
-    let labeling = computeDecorationsShort basicLabGraph
-    let shortPictureLabGraph = setToLabGraph set (labeling !)
-    let shortPictureGraphViz = showLabGraphViz shortPictureLabGraph
-
-    let shortPictureDotFile = dotDir ++ "/" ++ name ++ "_short_picture.dot"
-    let shortPictureImgFile = imgDir ++ "/" ++ name ++ "_short_picture.png"
-
-    writeFile shortPictureDotFile shortPictureGraphViz
-    dotToPng shortPictureDotFile shortPictureImgFile
-
-    putStrLn "Grafo visualización generado. Con ambos tipos de decorado, completo y abreviado.\n" 
-    putStrLn $ "Revisar " ++ dotDir ++ " y " ++ imgDir ++ "\n"
+    putStrLn "Visualización simple generada.\n"
 
     ----------------------------------------------------------------------
     -- Impresión de decoraciones
     ----------------------------------------------------------------------
+    -- Cambiar por computeDecorationsShort si quiere mayor legilibilidad
     let decs = computeDecorations basicLabGraph
 
     putStrLn "Desarrollo de las decoraciones del grafo:\n"

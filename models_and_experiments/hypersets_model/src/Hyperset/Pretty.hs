@@ -21,10 +21,3 @@ prettyHFS (U x) = case cast x of
     Nothing -> show x  
 prettyHFS (S []) = "{}"
 prettyHFS (S xs) = "{" ++ intercalate ", " (map prettyHFS xs) ++ "}"
-
--- | Obtiene el nombre de los átomos de un conjunto
-getVertexFromLabeling :: HFS String -> String
-getVertexFromLabeling (U x)   = x
-getVertexFromLabeling (S [])  = "{}"
-getVertexFromLabeling (S [U x]) = x 
-getVertexFromLabeling (S xs)  = "{" ++ intercalate ", " (map getVertexFromLabeling xs) ++ "}"

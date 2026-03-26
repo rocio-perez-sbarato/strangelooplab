@@ -13,7 +13,7 @@ import Data.Array ( Array, (!), bounds, indices, listArray )
 import Hyperset.Types
     ( Labeling, Vertex, HFS(..), Graph, LabGraph(..) )
 import Hyperset.Operations ( unionHFS )
-import Hyperset.Pretty (prettyHFS, getVertexFromLabeling)
+import Hyperset.Pretty (prettyHFS)
 
 -- | Decorado de cada vértice del grafo
 computeDecorations :: LabGraph String -> Array Vertex (HFS String)
@@ -23,7 +23,7 @@ computeDecorations (LabGraph gr label) =
 
 decorate :: Graph -> Labeling String -> [Vertex] -> Vertex -> HFS String
 decorate gr label visited v
-  | v `elem` visited = U ("d(" ++ getVertexFromLabeling(label v) ++ ")")
+  | v `elem` visited = U ("d(" ++ show v ++ ")")
   | null children    = label v
   | otherwise        = unionHFS (label v) (S childDecs)
   where
@@ -39,10 +39,10 @@ computeDecorationsShort (LabGraph gr label) = listArray (bounds gr)
 -- | Decorado simplificado de un vértice 
 decorateShort :: Graph -> Labeling String -> [Vertex] -> Vertex -> HFS String
 decorateShort gr label visited v
-  | v `elem` visited = U ("d(" ++ getVertexFromLabeling(label v) ++ ")")
+  | v `elem` visited = U ("d(" ++ show v ++ ")")
   | null children    = label v
   | otherwise =
       unionHFS (label v) (S (map d children))
   where
     children = gr ! v
-    d x = U ("d(" ++ getVertexFromLabeling(label x) ++ ")")
+    d x = U ("d(" ++ show x ++ ")")

@@ -64,10 +64,16 @@ wellFoundedSet :: RefHFS String
 wellFoundedSet = RefS 0 [RefU ("C",2),RefS 1 [RefU ("C",2)]]
 
 wellFoundedLabeling :: Labeling String
-wellFoundedLabeling 0 = S [U "X"] -- A
-wellFoundedLabeling 1 = S [ ]  -- B
-wellFoundedLabeling 2 = S [U "X", U "Y"] -- C 
-wellFoundedLabeling _ = U "???" 
+wellFoundedLabeling 0 = U "A"
+wellFoundedLabeling 1 = U "B" 
+wellFoundedLabeling 2 = U "C"
+wellFoundedLabeling _ = U "???"
+
+wellFoundedCanonicalLabeling :: Labeling String
+wellFoundedCanonicalLabeling 0 = S [U "C", S [U "C"]] 
+wellFoundedCanonicalLabeling 1 = S [U "C"]  
+wellFoundedCanonicalLabeling 2 = U "C"
+wellFoundedCanonicalLabeling _ = U "???" 
 
 -- === wellFounded2 ===
 wellFounded2System :: System String
@@ -222,7 +228,6 @@ nonWellFounded5Labeling 2 = U "Z"
 nonWellFounded5Labeling 3 = U "A"
 nonWellFounded5Labeling 4 = U "B"
 nonWellFounded5Labeling _ = U "???"
-
 
 -- === pair ===
 pairSystem :: System String
